@@ -1,5 +1,5 @@
 /** Direção de ordenação */
-export type SortOrder = 'asc' | 'desc';
+export type SortOrder = "asc" | "desc";
 
 /** Parâmetros de paginação */
 export interface Pagination {
@@ -17,10 +17,10 @@ export interface PaginatedResponse<T> {
 
 /** Estado assíncrono genérico */
 export type AsyncState<T> =
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { status: 'success'; data: T }
-  | { status: 'error'; error: string };
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; error: string };
 
 /** Campos de auditoria (timestamps) */
 export interface WithTimestamps {

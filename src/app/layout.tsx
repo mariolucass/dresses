@@ -1,12 +1,8 @@
+import { fontSans, fontSerif } from "@/shared/config/fonts";
 import { cn } from "@/shared/lib/utils";
-import type { Metadata } from "next";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Next.js Enterprise Boilerplate 2026",
-  description:
-    "Scalable, feature-sliced, high-performance Next.js application.",
-};
+export { metadata } from "@/shared/config/metadata";
 
 import { AuthProvider } from "@/shared/providers/auth-provider";
 import { QueryProvider } from "@/shared/providers/query-provider";
@@ -21,7 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable,
+          fontSerif.variable,
+        )}
+      >
         <QueryProvider>
           <ThemeProvider
             attribute="class"
