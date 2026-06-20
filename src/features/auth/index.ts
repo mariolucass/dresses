@@ -6,3 +6,4 @@ export type { LoginFormData, RegisterFormData } from "./model/auth-schemas";
 export { useAuthStore } from "./model/auth-store";
 export { LoginForm } from "./ui/login-form";
 export { RegisterForm } from "./ui/register-form";
+export {getCurrentUserService} from "./api/get-current-user";
