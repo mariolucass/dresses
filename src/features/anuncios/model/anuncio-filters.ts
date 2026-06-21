@@ -3,11 +3,10 @@ import type {
   CondicaoItem,
   TipoAnuncio,
 } from "@entities/anuncio/model/anuncio.types";
-import { parseAsString, parseAsStringEnum } from "nuqs";
+import { parseAsInteger, parseAsString, parseAsStringEnum } from "nuqs";
 
-/** Parsers nuqs para filtros de URL dos anúncios */
 export const anuncioFilterParsers = {
-  busca: parseAsString.withDefault(""),
+  busca: parseAsString,
   categoria: parseAsStringEnum<CategoriaAnuncio>([
     "ROUPAS_FEMININAS",
     "ROUPAS_MASCULINAS",
@@ -26,4 +25,7 @@ export const anuncioFilterParsers = {
     "USADO_BOM",
     "USADO_REGULAR",
   ]),
+  tamanho: parseAsString,
+  precoMin: parseAsInteger,
+  precoMax: parseAsInteger,
 };

@@ -12,7 +12,8 @@ export function fetchAnuncios(filters?: AnuncioFilters): Anuncio[] {
     anuncios = anuncios.filter(
       (a) =>
         a.titulo.toLowerCase().includes(q) ||
-        a.descricao.toLowerCase().includes(q),
+        a.descricao.toLowerCase().includes(q) ||
+        (a.marca?.toLowerCase().includes(q) ?? false),
     );
   }
   if (filters.categoria) {
@@ -31,6 +32,11 @@ export function fetchAnuncios(filters?: AnuncioFilters): Anuncio[] {
   }
   if (filters.precoMax !== undefined) {
     anuncios = anuncios.filter((a) => (a.preco ?? Infinity) <= filters.precoMax!);
+  }
+  if (filters.tamanho) {
+    anuncios = anuncios.filter((a) =>
+      a.tamanho.toLowerCase().includes(filters.tamanho!.toLowerCase()),
+    );
   }
 
   return anuncios;

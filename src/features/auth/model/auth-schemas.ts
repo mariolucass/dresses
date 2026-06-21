@@ -10,7 +10,7 @@ export const registerSchema = z.object({
   email: z.string().email('E-mail inválido.'),
   senha: z.string().min(6, 'A senha deve ter ao menos 6 caracteres.'),
   confirmarSenha: z.string(),
-  role: z.enum(['COMPRADOR', 'VENDEDOR', 'AMBOS']).default('AMBOS'),
+  role: z.enum(['COMPRADOR', 'VENDEDOR', 'AMBOS']),
 }).refine((data) => data.senha === data.confirmarSenha, {
   message: 'As senhas não coincidem.',
   path: ['confirmarSenha'],

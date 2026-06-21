@@ -29,6 +29,7 @@ export interface Anuncio {
   id: string;
   titulo: string;
   descricao: string;
+  marca?: string;
   fotos: string[]; // URLs ou base64
   preco?: number; // opcional para tipo TROCA puro
   valorVAT?: number; // valor em VAT para trocas
@@ -53,6 +54,7 @@ export type UpdateAnuncioDto = Partial<
     Anuncio,
     | "titulo"
     | "descricao"
+    | "marca"
     | "fotos"
     | "preco"
     | "valorVAT"

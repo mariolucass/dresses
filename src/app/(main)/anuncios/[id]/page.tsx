@@ -1,4 +1,4 @@
-import { AnuncioDetailPage } from "@views/anuncios";
+import { AnuncioDetailPage } from "@views/anuncios/ui/anuncio-detail-page";
 
 interface AnuncioDetalheRouteProps {
   params: Promise<{ id: string }>;
