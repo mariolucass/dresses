@@ -3,7 +3,8 @@ import { useStore } from '../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 import {
   Container, Box, Typography, TextField, MenuItem, 
-  Card, CardMedia, CardContent, Button, Chip, Divider, Stack, InputAdornment
+  Card, CardMedia, CardContent, Button, Chip, Divider, Stack, InputAdornment,
+  Skeleton
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
@@ -18,19 +19,6 @@ export default function Home() {
   const navigate = useNavigate();
   const catalogoRef = useRef(null);
 
-    useEffect(() => {
-        if (sessionStorage.getItem('scroll_to_catalogo') === 'true') {
-            sessionStorage.removeItem('scroll_to_catalogo');
-
-            setTimeout(() => {
-            catalogoRef.current?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-            }, 150);
-        }
-    }, []);
-
   // ESTADOS DOS FILTROS E BUSCA
   const [busca, setBusca] = useState('');
   const [categoria, setCategoria] = useState('');
@@ -39,6 +27,31 @@ export default function Home() {
   const [minVat, setMinVat] = useState('');
   const [maxVat, setMaxVat] = useState('');
   const [ordenacao, setOrdenacao] = useState('recentes');
+  
+  // Loading nas transições de filtros
+  const [carregando, setCarregando] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem('scroll_to_catalogo') === 'true') {
+      sessionStorage.removeItem('scroll_to_catalogo');
+
+      setTimeout(() => {
+        catalogoRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 150);
+    }
+  }, []);
+
+  // Loading suave sempre que qualquer filtro mudar
+  useEffect(() => {
+    setCarregando(true);
+    const timer = setTimeout(() => {
+      setCarregando(false);
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [busca, categoria, tamanho, modalidade, minVat, maxVat, ordenacao]);
 
   const handleLimparFiltros = () => {
     setBusca('');
@@ -54,7 +67,7 @@ export default function Home() {
     catalogoRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // LÓGICA DE FILTRAGENM
+  // LÓGICA DE FILTRAGEM
   const anunciosFiltrados = anuncios
     .filter((anuncio) => anuncio.status === 'disponivel')
     .filter((anuncio) => {
@@ -84,7 +97,7 @@ export default function Home() {
   return (
     <Container maxWidth="lg" sx={{ pt: 2 }}>
       
-      {/* BANNER */}
+      {/* BANNER COM TRANSIÇÃO DE ENTRADA SUAVE */}
       <Box 
         sx={{ 
           bgcolor: (theme) => theme.palette.mode === 'light' ? 'primary.light' : 'primary.dark',
@@ -93,7 +106,12 @@ export default function Home() {
           p: { xs: 4, md: 8 },
           textAlign: 'center',
           mb: 6,
-          boxShadow: 2
+          boxShadow: 2,
+          animation: 'fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+          '@keyframes fadeInUp': {
+            from: { opacity: 0, transform: 'translateY(15px)' },
+            to: { opacity: 1, transform: 'translateY(0)' }
+          }
         }}
       >
         <Typography variant="h3" component="h1" fontWeight="bold" gutterBottom sx={{ fontSize: { xs: '2rem', md: '4rem' } }}>
@@ -111,7 +129,14 @@ export default function Home() {
             size="large" 
             startIcon={<StorefrontIcon />}
             onClick={handleScrollToCatalogo}
-            sx={{ fontWeight: 'bold', px: 4, py: 1.5, width: { xs: '100%', sm: 'auto' } }}
+            sx={{ 
+              fontWeight: 'bold', 
+              px: 4, 
+              py: 1.5, 
+              width: { xs: '100%', sm: 'auto' },
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              '&:hover': { transform: 'scale(1.05)', boxShadow: 4 }
+            }}
           >
             Explorar Anúncios
           </Button>
@@ -121,7 +146,15 @@ export default function Home() {
             size="large" 
             startIcon={<AddCircleOutlinedIcon />}
             onClick={() => navigate('/garagem')}
-            sx={{ fontWeight: 'bold', px: 4, py: 1.5, borderWidth: 2, '&:hover': { borderWidth: 2 }, width: { xs: '100%', sm: 'auto' } }}
+            sx={{ 
+              fontWeight: 'bold', 
+              px: 4, 
+              py: 1.5, 
+              borderWidth: 2, 
+              width: { xs: '100%', sm: 'auto' },
+              transition: 'all 0.2s ease',
+              '&:hover': { borderWidth: 2, bgcolor: 'rgba(255,255,255,0.08)', transform: 'scale(1.05)' }
+            }}
           >
             Anunciar Peça
           </Button>
@@ -151,12 +184,24 @@ export default function Home() {
             border: '1px solid rgba(255,255,255,0.08)', 
             position: { xs: 'static', md: 'sticky' }, 
             top: 90,
-            width: '100%' // Garante preenchimento total
+            width: '100%',
+            transition: 'box-shadow 0.3s ease',
+            '&:focus-within': { boxShadow: '0 0 0 2px rgba(46, 125, 50, 0.2)' }
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="h6" fontWeight="bold">Filtros</Typography>
-            <Button size="small" startIcon={<FilterAltOffIcon />} onClick={handleLimparFiltros} color="secondary" sx={{ textTransform: 'none' }}>
+            <Button 
+              size="small" 
+              startIcon={<FilterAltOffIcon />} 
+              onClick={handleLimparFiltros} 
+              color="secondary" 
+              sx={{ 
+                textTransform: 'none',
+                transition: 'all 0.2s',
+                '&:active': { transform: 'scale(0.95)' }
+              }}
+            >
               Limpar
             </Button>
           </Box>
@@ -235,8 +280,24 @@ export default function Home() {
           </Typography>
 
           {/* GRID DE PRODUTOS */}
-          {anunciosFiltrados.length === 0 ? (
-            <Box sx={{ py: 8, textAlign: 'center', bgcolor: 'action.hover', borderRadius: 2, width: '100%' }}>
+          {carregando ? (
+            // Mostra Skeletons alinhados com o grid original durante transições
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }, gap: 3, width: '100%' }}>
+              {[1, 2, 3].map((n) => (
+                <Card key={n} variant="outlined" sx={{ borderRadius: 2 }}>
+                  <Skeleton variant="rectangular" height={220} animation="wave" />
+                  <CardContent sx={{ p: 2 }}>
+                    <Stack direction="row" spacing={1} sx={{ mb: 2 }}><Skeleton width="40%" height={20} /><Skeleton width="30%" height={20} /></Stack>
+                    <Skeleton width="80%" height={24} sx={{ mb: 1 }} />
+                    <Skeleton width="100%" height={40} sx={{ mb: 2 }} />
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><Skeleton width="30%" /><Skeleton width="20%" /></Box>
+                  </CardContent>
+                  <Box sx={{ p: 2 }}><Skeleton variant="rectangular" height={30} /></Box>
+                </Card>
+              ))}
+            </Box>
+          ) : anunciosFiltrados.length === 0 ? (
+            <Box sx={{ py: 8, textAlign: 'center', bgcolor: 'action.hover', borderRadius: 2, width: '100%', animation: 'fadeIn 0.4s ease' }}>
               <Typography variant="h6" color="text.secondary" fontWeight="medium">
                 Nenhum desapego encontrado com os filtros selecionados.       
               </Typography>
@@ -245,13 +306,11 @@ export default function Home() {
             <Box 
               sx={{ 
                 display: 'grid', 
-                gridTemplateColumns: {
-                  xs: '1fr',
-                  sm: 'repeat(2, 1fr)',
-                  lg: 'repeat(3, 1fr)'
-                },
+                gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' },
                 gap: 3,
-                width: '100%'
+                width: '100%',
+                animation: 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                '@keyframes fadeIn': { from: { opacity: 0 }, to: { opacity: 1 } }
               }}
             >
               {anunciosFiltrados.map((anuncio) => (
@@ -262,21 +321,29 @@ export default function Home() {
                     height: '100%', 
                     display: 'flex', 
                     flexDirection: 'column',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    overflow: 'hidden',
+                    transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                     '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
+                      transform: 'translateY(-6px)', // Eleva levemente o card
+                      boxShadow: '0 12px 24px rgba(0,0,0,0.15)',
+                      '& .card-media-zoom': { transform: 'scale(1.05)' }
                     }
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    height="220"
-                    image={anuncio.foto}
-                    alt={anuncio.titulo}
-                    onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
-                    sx={{ objectFit: 'cover' }}
-                  />
+                  <Box sx={{ overflow: 'hidden', height: 220, position: 'relative' }}>
+                    <CardMedia
+                      component="img"
+                      className="card-media-zoom"
+                      image={anuncio.foto}
+                      alt={anuncio.titulo}
+                      onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
+                      sx={{ 
+                        height: '100%',
+                        objectFit: 'cover',
+                        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                    />
+                  </Box>
 
                   <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
                     <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mb: 1.5 }}>
@@ -321,6 +388,10 @@ export default function Home() {
                       color="primary" 
                       size="small"
                       onClick={() => navigate(`/anuncio/${anuncio.id}`)}
+                      sx={{
+                        transition: 'all 0.2s ease',
+                        '&:active': { transform: 'scale(0.98)' }
+                      }}
                     >
                       Ver Detalhes
                     </Button>
