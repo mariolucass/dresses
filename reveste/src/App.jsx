@@ -1,122 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useAuth } from './context/AuthContext';
+import Login from './pages/Login';
+import { Container, Typography, Button, Box, Avatar } from '@mui/material';
+import { useAppTheme } from './context/ThemeContext';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { usuarioLogado, logout, isAuthenticated } = useAuth();
+  const { toggleTheme, mode } = useAppTheme();
 
+  // 1. Se não estiver autenticado, mostra a tela de Login
+  if (!isAuthenticated) {
+    return (
+      <Box sx={{ minHeight: '100vh', pt: 4, bgcolor: 'background.default' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', px: 4 }}>
+          <Button variant="outlined" onClick={toggleTheme}>
+            Tema: {mode.toUpperCase()}
+          </Button>
+        </Box>
+        <Login />
+      </Box>
+    );
+  }
+
+  // 2. Se estiver autenticado, mostra o painel do usuário logado
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <Container maxWidth="sm" style={{ marginTop: '4rem', textAlign: 'center' }}>
+      <Box p={4} boxShadow={3} bgcolor="background.paper" borderRadius={2}>
+        {usuarioLogado.avatar && (
+          <Avatar src={usuarioLogado.avatar} sx={{ width: 64, height: 64, mx: 'auto', mb: 2 }} />
+        )}
+        <Typography variant="h4" color="primary" gutterBottom>
+          Olá, {usuarioLogado.nome}! 👋
+        </Typography>
+        <Typography variant="body1" color="textSecondary" paragraph>
+          Você entrou com o e-mail: <strong>{usuarioLogado.email}</strong>
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 3 }}>
+          Seu saldo atual: <strong>{usuarioLogado.vats} VATs</strong>
+        </Typography>
+        
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+          <Button variant="contained" color="error" onClick={logout}>
+            Fazer Logout (Sair)
+          </Button>
+          <Button variant="outlined" onClick={toggleTheme}>
+            Mudar Tema
+          </Button>
+        </Box>
+      </Box>
+    </Container>
+  );
 }
 
-export default App
+export default App;
