@@ -4,11 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Container, Box, Typography, TextField, Button, Card, CardContent, Link, Alert } from '@mui/material';
 import { loginSchema, registerSchema } from '../validations/authValidation';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [isRegister, setIsRegister] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const { login, register } = useAuth();
+  const navigate = useNavigate();
 
   // Escolhe dinamicamente o esquema de validação do Zod
   const { register: registerField, handleSubmit, formState: { errors }, reset } = useForm({
@@ -18,15 +20,17 @@ export default function Login() {
   const onSubmit = (data) => {
     setErrorMsg('');
     try {
-      if (isRegister) {
+        if (isRegister) {
         register(data);
-      } else {
+        alert('Cadastro realizado com sucesso! Agora insira seus dados para entrar.');
+        setIsRegister(false); // Joga o usuário automaticamente para a tela de Login
+        reset(); // Limpa os campos digitados
+        } else {
         login(data.email, data.senha);
-      }
-      // Aqui você colocará o redirecionamento quando as rotas estiverem prontas: navigate('/');
-      alert('Autenticado com sucesso! (Redirecionamento pendente)');
+        navigate('/'); // Redireciona automaticamente para a Página Inicial (Home)
+        }
     } catch (err) {
-      setErrorMsg(err.message);
+        setErrorMsg(err.message);
     }
   };
 

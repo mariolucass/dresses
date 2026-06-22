@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
     }
 
     const novoUsuario = {
-      id: `usr_${uuidv4()}`,
+      id: `user${uuidv4()}`,
       ...dadosNovos,
       avatar: dadosNovos.avatar || '',
       vats: 0, // Inicia com 0 moedas virtuais conforme regra de negócio
