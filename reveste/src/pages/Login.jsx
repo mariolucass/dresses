@@ -46,7 +46,7 @@ export default function Login() {
             </Typography>
             
             <Typography variant="body2" color="textSecondary" align="center" sx={{ mb: 3 }}>
-              {isRegister ? 'Preencha os campos para desapegar e negociar' : 'Insira suas credenciais simuladas'}
+              {isRegister ? 'Preencha os campos para desapegar e negociar' : 'Insira suas credenciais'}
             </Typography>
 
             {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
