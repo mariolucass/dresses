@@ -1,8 +1,13 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { adSchema } from '../validations/adValidation';
 import {
-  Container, Box, Typography, Button, Chip, Divider, Stack, Card, CardMedia, Grid, Paper, Avatar
+  Container, Box, Typography, Button, Chip, Divider, Stack, Card, CardMedia, Grid, Paper, Avatar,
+  Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
@@ -14,13 +19,27 @@ import PersonIcon from '@mui/icons-material/Person';
 
 const FALLBACK_IMAGE = 'https://www.ype.ind.br/assets-NS/roupas-de-malha_ypedia-scaled.jpg?w=500';
 
+const CATEGORIAS_OPCOES = [
+  { value: 'camisa', label: 'CAMISA' },
+  { value: 'calca', label: 'CALÇA' },
+  { value: 'casaco', label: 'CASACO' },
+  { value: 'calcado', label: 'CALÇADO' },
+  { value: 'acessorio', label: 'ACESSÓRIO' },
+  { value: 'outro', label: 'OUTRO' }
+];
+
 export default function AdDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  // Pega a lista de anúncios e a lista de usuários do contexto
-  const { anuncios, setAnuncios } = useStore(); 
+
+  const { anuncios, editarAnuncio, excluirAnuncio } = useStore(); 
   const { usuarioLogado, usuarios } = useAuth();
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm({
+    resolver: zodResolver(adSchema),
+  });
 
   // Encontra o anúncio correspondente pelo ID da URL
   const anuncio = anuncios?.find((a) => String(a.id) === String(id));
@@ -51,7 +70,7 @@ export default function AdDetails() {
   // Verifica se o usuário atual é o criador do anúncio
   const isDono = usuarioLogado && String(usuarioLogado.id) === String(anuncio.usuarioId);
 
-  // PROCURARA O DONO DO ANÚNCIO NA LISTA DE USUÁRIOS
+  // Procura o dono do anúncio na lista de usuários
   const donoDoAnuncio = usuarios?.find((u) => String(u.id) === String(anuncio.usuarioId));
   
   // Nome de exibição
@@ -59,19 +78,38 @@ export default function AdDetails() {
     ? donoDoAnuncio.nome 
     : `Usuário #${anuncio.usuarioId.slice(0, 8)}...`;
 
-  // Ações do Dono
   const handleExcluir = () => {
     if (window.confirm('Tem certeza que deseja excluir este anúncio permanentemente?')) {
-      if (setAnuncios) {
-        setAnuncios(anuncios.filter((a) => String(a.id) !== String(id)));
+      try {
+        excluirAnuncio(anuncio.id, usuarioLogado?.id);
+        alert('Anúncio excluído com sucesso!');
+        navigate('/'); // Volta para o marketplace já que o anúncio sumiu
+      } catch (err) {
+        alert(err.message);
       }
-      alert('Anúncio excluído com sucesso!');
-      navigate('/');
     }
   };
 
   const handleEditar = () => {
-    navigate(`/editar-anuncio/${anuncio.id}`);
+    setValue('titulo', anuncio.titulo);
+    setValue('descricao', anuncio.descricao);
+    setValue('categoria', anuncio.categoria);
+    setValue('tamanho', anuncio.tamanho);
+    setValue('conservacao', anuncio.conservacao);
+    setValue('foto', anuncio.foto);
+    setValue('modalidade', anuncio.modalidade);
+    setValue('vats', anuncio.vats);
+    setOpenModal(true);
+  };
+
+  const onSubmit = (data) => {
+    try {
+      editarAnuncio(anuncio.id, data, usuarioLogado?.id);
+      setOpenModal(false);
+      alert('Anúncio atualizado com sucesso!');
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   // Ações de Visitantes
@@ -235,8 +273,53 @@ export default function AdDetails() {
 
           </Box>
         </Grid>
-
       </Grid>
+
+      <Dialog open={openModal} onClose={() => setOpenModal(false)} fullWidth maxWidth="sm">
+        <DialogTitle fontWeight="bold" sx={{ pt: 3, px: 3, pb: 1 }}>
+          Editar Dados do Anúncio
+        </DialogTitle>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <DialogContent dividers sx={{ p: 3 }}>
+            <Stack spacing={2.5}>
+              <TextField fullWidth variant="outlined" label="Título do Anúncio" error={!!errors.titulo} helperText={errors.titulo?.message} {...register('titulo')} />
+
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <TextField select fullWidth variant="outlined" label="Categoria" defaultValue={anuncio.categoria} error={!!errors.categoria} helperText={errors.categoria?.message} {...register('categoria')}>
+                  {CATEGORIAS_OPCOES.map((cat) => (
+                    <MenuItem key={cat.value} value={cat.value}>{cat.label}</MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField select fullWidth variant="outlined" label="Tamanho" defaultValue={anuncio.tamanho} error={!!errors.tamanho} helperText={errors.tamanho?.message} {...register('tamanho')}>
+                  {['PP', 'P', 'M', 'G', 'GG'].map((tam) => <MenuItem key={tam} value={tam}>{tam}</MenuItem>)}
+                </TextField>
+              </Box>
+
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <TextField select fullWidth variant="outlined" label="Conservação" defaultValue={anuncio.conservacao} error={!!errors.conservacao} helperText={errors.conservacao?.message} {...register('conservacao')}>
+                  {['Novo', 'Bom', 'Regular', 'Marcas de uso'].map((est) => <MenuItem key={est} value={est}>{est}</MenuItem>)}
+                </TextField>
+
+                <TextField select fullWidth variant="outlined" label="Modalidade" defaultValue={anuncio.modalidade} error={!!errors.modalidade} helperText={errors.modalidade?.message} {...register('modalidade')}>
+                  {['Venda', 'Troca', 'Ambos'].map((mod) => <MenuItem key={mod} value={mod}>{mod}</MenuItem>)}
+                </TextField>
+              </Box>
+
+              <TextField fullWidth variant="outlined" type="number" label="Valor pedido (em Moeda VAT)" error={!!errors.vats} helperText={errors.vats?.message} {...register('vats')} />
+              <TextField fullWidth variant="outlined" label="URL Direta da Foto do Produto" error={!!errors.foto} helperText={errors.foto?.message} {...register('foto')} />
+              <TextField fullWidth variant="outlined" multiline rows={4} label="Descrição Detalhada da Peça" error={!!errors.descricao} helperText={errors.descricao?.message} {...register('descricao')} />
+            </Stack>
+          </DialogContent>
+          
+          <DialogActions sx={{ p: 2.5, px: 3 }}>
+            <Button onClick={() => setOpenModal(false)} color="inherit">Cancelar</Button>
+            <Button type="submit" variant="contained" color="primary" sx={{ px: 4, ml: 2 }}>
+              Salvar Alterações
+            </Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
     </Container>
   );
 }
