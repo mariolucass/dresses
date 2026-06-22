@@ -1,10 +1,14 @@
 import { createContext, useContext } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { storageService } from '../services/storageService'; // 🌟 Importação do serviço
 import { v4 as uuidv4 } from 'uuid';
 
 const StoreContext = createContext();
 
 export function StoreProvider({ children }) {
+  storageService.init();
+
+  // O hook busca direto do localStorage preenchido pelo init()
   const [anuncios, setAnuncios] = useLocalStorage('anuncios', []);
 
   // Criar Anúncio
@@ -13,7 +17,7 @@ export function StoreProvider({ children }) {
       id: `anc_${uuidv4()}`,
       usuarioId,
       ...dadosAnuncio,
-      status: 'disponivel', // Status inicial obrigatório
+      status: 'disponivel', // Status inicial
       criadoEm: new Date().toISOString(),
     };
     setAnuncios([...anuncios, novoAnuncio]);
