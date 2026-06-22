@@ -5,6 +5,7 @@ import Login from '../pages/Login';
 import Profile from '../pages/Profile';
 import MyGarage from '../pages/MyGarage';
 import AdDetails from '../pages/AdDetails';
+import Wallet from '../pages/Wallet';
 import ProtectedRoute from '../components/ProtectedRoute';
 
 // Placeholder para rotas ainda não mapeadas fisicamente em arquivos dedicados
@@ -17,17 +18,18 @@ export default function AppRoutes() {
       {/* MainLayout entrega o Header (Navbar) e Footer para todas as rotas de dentro */}
       <Route element={<MainLayout />}>
         
-        {/* ================= ROTAS PÚBLICAS ================= */}
+        {/* ROTAS PÚBLICAS */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<CadastroPlaceholder />} />
         <Route path="/anuncio/:id" element={<AdDetails />} />
 
-        {/* ================= ROTAS PROTEGIDAS ================= */}
+        {/* ROTAS PROTEGIDAS */}
         <Route element={<ProtectedRoute />}>
           <Route path="/perfil" element={<Profile />} />
           <Route path="/garagem" element={<MyGarage />} />
           <Route path="/minhas-negociacoes" element={<NegociacoesPlaceholder />} />
+          <Route path="/carteira" element={<Wallet />} />
         </Route>
 
       </Route>

@@ -27,35 +27,35 @@ export default function Navbar() {
     setMobileOpen(!mobileOpen);
   };
 
+  // LÊ O SALDO
+  const saldoExibido = usuarioLogado?.saldoVats ?? usuarioLogado?.vats ?? 0;
+
   const menuItems = [
     { label: 'Home', path: '/', action: 'topo' },
     { label: 'Explorar anúncios', path: '/', action: 'catalogo' },
     ...(isAuthenticated ? [
         { label: 'Minhas negociações', path: '/minhas-negociacoes' },
         { label: 'Meu perfil', path: '/perfil' },
-        { label: 'Garagem virtual', path: '/garagem' }
+        { label: 'Garagem virtual', path: '/garagem' },
+        // 🌟 REQUISITO: Inclusão da rota de gerenciamento de VATs no menu
+        { label: 'Carteira VAT', path: '/carteira' }
     ] : [])
   ];
 
-  // GERENCIADOR DE CLIQUE
   const handleMenuClick = (item) => {
     setMobileOpen(false);
 
     if (item.action === 'catalogo') {
       if (window.location.pathname === '/') {
-        // Se já está na Home, rola direto para a vitrine
         const el = document.getElementById('catalogo-vitrine');
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        // Se está em outra página, avisa a Home para rolar ao carregar
         sessionStorage.setItem('scroll_to_catalogo', 'true');
         navigate('/');
       }
     } else if (item.action === 'topo' && window.location.pathname === '/') {
-      // Se clicou em Home e já está nela, rola para o topo
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      // Navegação padrão para as outras rotas
       navigate(item.path);
     }
   };
@@ -74,8 +74,26 @@ export default function Navbar() {
           <Typography variant="subtitle1" fontWeight="bold" align="center" sx={{ mb: 1 }}>
             {usuarioLogado?.nome}
           </Typography>
-          <Box sx={{ bgcolor: 'secondary.main', color: 'white', px: 2, py: 0.5, borderRadius: 5, fontWeight: 'bold', fontSize: '0.85rem' }}>
-            {usuarioLogado?.vats || 0} VATs
+          
+          <Box 
+            component={Link}
+            to="/carteira"
+            onClick={() => setMobileOpen(false)}
+            sx={{ 
+              bgcolor: 'secondary.main', 
+              color: 'white', 
+              px: 2, 
+              py: 0.5, 
+              borderRadius: 5, 
+              fontWeight: 'bold', 
+              fontSize: '0.85rem',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s',
+              '&:hover': { bgcolor: 'secondary.dark' }
+            }}
+          >
+            {saldoExibido} VATs
           </Box>
         </Box>
       ) : (
@@ -162,8 +180,24 @@ export default function Navbar() {
                   </Typography>
                 </Box>
 
-                <Box sx={{ bgcolor: 'secondary.main', color: 'white', px: 2, py: 0.6, borderRadius: '50px', fontWeight: 'bold', fontSize: '0.85rem' }}>
-                  {usuarioLogado?.vats || 0} VATs
+                <Box 
+                  component={Link}
+                  to="/carteira"
+                  sx={{ 
+                    bgcolor: 'secondary.main', 
+                    color: 'white', 
+                    px: 2, 
+                    py: 0.6, 
+                    borderRadius: '50px', 
+                    fontWeight: 'bold', 
+                    fontSize: '0.85rem',
+                    textDecoration: 'none',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s',
+                    '&:hover': { bgcolor: 'secondary.dark' }
+                  }}
+                >
+                  {saldoExibido} VATs
                 </Box>
 
                 <IconButton onClick={handleLogout} color="error" title="Sair" sx={{ p: 1 }}>
