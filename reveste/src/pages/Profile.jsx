@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useStore } from '../context/StoreContext';
+import { useNegotiation } from '../context/NegotiationContext';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { profileSchema } from '../validations/authValidation';
@@ -18,7 +18,9 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 export default function Profile() {
   const { usuarioLogado, atualizarPerfil } = useAuth();
-  const { negociacoes = [], avaliacoes = [] } = useStore();
+  
+  // Busca as negociações e avaliações
+  const { negociacoes = [], avaliacoes = [] } = useNegotiation();
   const [openModal, setOpenModal] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm({
@@ -36,13 +38,13 @@ export default function Profile() {
   }
 
   const totalNegociacoesConcluidas = negociacoes.filter(
-    (n) => (n.usuarioId === usuarioLogado.id || n.donoId === usuarioLogado.id) && n.status === 'concluida'
+    (n) => (String(n.compradorId) === String(usuarioLogado.id) || String(n.vendedorId) === String(usuarioLogado.id)) && n.status === 'concluida'
   ).length;
 
-  const notasRecebidas = avaliacoes.filter((a) => a.usuarioDestinoId === usuarioLogado.id);
+  const notasRecebidas = avaliacoes.filter((a) => String(a.avaliadoId) === String(usuarioLogado.id));
   const mediaAvaliacoesDerivada = notasRecebidas.length > 0
-    ? (notasRecebidas.reduce((soma, item) => soma + item.nota, 0) / notasRecebidas.length).toFixed(1)
-    : '5.0';
+    ? (notasRecebidas.reduce((soma, item) => soma + item.estrelas, 0) / notasRecebidas.length).toFixed(1)
+    : '10.0'; // Se não tiver avaliações, começa com a nota máxima
 
   const handleOpenEdit = () => {
     setValue('nome', usuarioLogado.nome);
@@ -58,7 +60,7 @@ export default function Profile() {
     try {
       atualizarPerfil(data);
       setOpenModal(false);
-      alert('Perfil updated!');
+      alert('Perfil atualizado com sucesso!');
     } catch (err) {
       alert(err.message);
     }
@@ -66,10 +68,9 @@ export default function Profile() {
 
   return (
     <Container maxWidth="md" sx={{ pt: { xs: 2, sm: 4 }, pb: { xs: 6, sm: 8 }, px: { xs: 2, sm: 3 } }}>
-      
       <Stack spacing={3}>
         
-        {/* CARD PRINCIPAL: Avatar, Nome e Carteira */}
+        {/* CARD PRINCIPAL */}
         <Card variant="outlined" sx={{ borderRadius: 4, p: { xs: 3, sm: 4 }, width: '100%' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2.5, maxWidth: 360, mx: 'auto' }}>
             <Avatar
@@ -77,7 +78,7 @@ export default function Profile() {
               alt={usuarioLogado.nome}
               sx={{ width: 110, height: 110, bgcolor: 'primary.main', fontSize: '2.5rem', boxShadow: 2 }}
             >
-              {usuarioLogado.nome.charAt(0).toUpperCase()}
+              {usuarioLogado.nome?.charAt(0).toUpperCase()}
             </Avatar>
             
             <Box sx={{ textAlign: 'center', width: '100%' }}>
@@ -90,15 +91,8 @@ export default function Profile() {
             <Paper 
               variant="outlined" 
               sx={{ 
-                width: '100%', 
-                py: 1.8, 
-                px: 2,
-                borderRadius: 3, 
-                bgcolor: 'action.hover',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 1.5
+                width: '100%', py: 1.8, px: 2, borderRadius: 3, bgcolor: 'action.hover',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5
               }}
             >
               <AccountBalanceWalletIcon color="primary" />
@@ -113,10 +107,7 @@ export default function Profile() {
             </Paper>
 
             <Button
-              fullWidth
-              variant="contained"
-              startIcon={<EditIcon />}
-              onClick={handleOpenEdit}
+              fullWidth variant="contained" startIcon={<EditIcon />} onClick={handleOpenEdit}
               sx={{ textTransform: 'none', fontWeight: 'bold', py: 1.2, borderRadius: 2 }}
             >
               Editar Dados
@@ -124,50 +115,31 @@ export default function Profile() {
           </Box>
         </Card>
 
+        {/* METRICAS ATUALIZADAS */}
         <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
           <Paper 
             variant="outlined" 
-            sx={{ 
-              flex: 1, 
-              p: 2, 
-              borderRadius: 4, 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              textAlign: 'center',
-              gap: 1 
-            }}
+            sx={{ flex: 1, p: 2, borderRadius: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 1 }}
           >
             <Avatar sx={{ bgcolor: 'warning.light', width: 44, height: 44 }}>
               <StarIcon sx={{ color: 'warning.dark', fontSize: '1.4rem' }} />
             </Avatar>
             <Box>
               <Typography variant="h5" fontWeight="bold" sx={{ lineHeight: 1.1 }}>{mediaAvaliacoesDerivada}</Typography>
-              <Typography variant="caption" color="text.secondary" fontWeight="medium">Avaliações</Typography>
+              <Typography variant="caption" color="text.secondary" fontWeight="medium">Avaliações (1-10)</Typography>
             </Box>
           </Paper>
 
           <Paper 
             variant="outlined" 
-            sx={{ 
-              flex: 1, 
-              p: 2, 
-              borderRadius: 4, 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              textAlign: 'center',
-              gap: 1 
-            }}
+            sx={{ flex: 1, p: 2, borderRadius: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 1 }}
           >
             <Avatar sx={{ bgcolor: 'success.light', width: 44, height: 44 }}>
               <HandshakeIcon sx={{ color: 'success.dark', fontSize: '1.4rem' }} />
             </Avatar>
             <Box>
               <Typography variant="h5" fontWeight="bold" sx={{ lineHeight: 1.1 }}>{totalNegociacoesConcluidas}</Typography>
-              <Typography variant="caption" color="text.secondary" fontWeight="medium">Trocas</Typography>
+              <Typography variant="caption" color="text.secondary" fontWeight="medium">Trocas Concluídas</Typography>
             </Box>
           </Paper>
         </Box>
@@ -178,39 +150,28 @@ export default function Profile() {
             <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 3 }}>
               Informações de Cadastro e Envio
             </Typography>
-            
             <Stack spacing={2.5}>
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                 <EmailIcon color="action" sx={{ mt: 0.3, fontSize: '1.3rem' }} />
                 <Box sx={{ minWidth: 0 }}>
                   <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.2 }}>E-mail</Typography>
-                  <Typography variant="body2" fontWeight="medium" sx={{ wordBreak: 'break-all' }}>
-                    {usuarioLogado.email}
-                  </Typography>
+                  <Typography variant="body2" fontWeight="medium" sx={{ wordBreak: 'break-all' }}>{usuarioLogado.email}</Typography>
                 </Box>
               </Box>
-
               <Divider />
-
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                 <PhoneIcon color="action" sx={{ mt: 0.3, fontSize: '1.3rem' }} />
                 <Box sx={{ minWidth: 0 }}>
                   <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.2 }}>Telefone</Typography>
-                  <Typography variant="body2" fontWeight="medium">
-                    {usuarioLogado.telefone}
-                  </Typography>
+                  <Typography variant="body2" fontWeight="medium">{usuarioLogado.telefone}</Typography>
                 </Box>
               </Box>
-
               <Divider />
-
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                 <HomeIcon color="action" sx={{ mt: 0.3, fontSize: '1.3rem' }} />
                 <Box sx={{ minWidth: 0 }}>
                   <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.2 }}>Endereço Postal</Typography>
-                  <Typography variant="body2" fontWeight="medium" sx={{ lineHeight: 1.4, wordBreak: 'break-word' }}>
-                    {usuarioLogado.endereco}
-                  </Typography>
+                  <Typography variant="body2" fontWeight="medium" sx={{ lineHeight: 1.4, wordBreak: 'break-word' }}>{usuarioLogado.endereco}</Typography>
                 </Box>
               </Box>
             </Stack>

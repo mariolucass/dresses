@@ -54,7 +54,7 @@ export default function Home() {
     catalogoRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // LÓGICA DE FILTRAGEM
+  // LÓGICA DE FILTRAGENM
   const anunciosFiltrados = anuncios
     .filter((anuncio) => anuncio.status === 'disponivel')
     .filter((anuncio) => {
@@ -96,12 +96,12 @@ export default function Home() {
           boxShadow: 2
         }}
       >
-        <Typography variant="h3" component="h1" fontWeight="bold" gutterBottom sx={{ fontSize: { xs: '2rem', md: '3.5rem' } }}>
-          Estilo Sustentável, Economia Circular ♻️
+        <Typography variant="h3" component="h1" fontWeight="bold" gutterBottom sx={{ fontSize: { xs: '2rem', md: '4rem' } }}>
+          Estilo Sustentável, Economia Circular
         </Typography>
         
-        <Typography variant="h6" sx={{ mb: 4, opacity: 0.9, maxWidth: '600px', mx: 'auto', fontSize: { xs: '1rem', md: '1.25rem' } }}>
-          Renove seu guarda-roupa desapegando do que não usa e conquistando novas peças usando a moeda VAT.
+        <Typography variant="h6" sx={{ mb: 4, opacity: 0.7, maxWidth: '600px', mx: 'auto', fontSize: { xs: '1rem', md: '1.25rem' } }}>
+          Renove seu guarda-roupa desapegando do que não usa e conquistando novas peças usando os seus VATs.
         </Typography>
         
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center" alignItems="center">
@@ -134,7 +134,6 @@ export default function Home() {
         id="catalogo-vitrine"
         sx={{ 
           display: 'grid', 
-          // Trava a barra lateral em 280px fixos no desktop (md) e o resto vai pro conteúdo
           gridTemplateColumns: { xs: '1fr', md: '280px 1fr' }, 
           gap: 4, 
           alignItems: 'start',
@@ -239,7 +238,7 @@ export default function Home() {
           {anunciosFiltrados.length === 0 ? (
             <Box sx={{ py: 8, textAlign: 'center', bgcolor: 'action.hover', borderRadius: 2, width: '100%' }}>
               <Typography variant="h6" color="text.secondary" fontWeight="medium">
-                Nenhum desapego encontrado com os filtros selecionados. 👕
+                Nenhum desapego encontrado com os filtros selecionados.       
               </Typography>
             </Box>
           ) : (

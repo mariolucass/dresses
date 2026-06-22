@@ -23,11 +23,11 @@ export default function Login() {
         if (isRegister) {
         register(data);
         alert('Cadastro realizado com sucesso! Agora insira seus dados para entrar.');
-        setIsRegister(false); // Joga o usuário automaticamente para a tela de Login
+        setIsRegister(false); // Joga o usuário para a tela de Login
         reset(); // Limpa os campos digitados
         } else {
         login(data.email, data.senha);
-        navigate('/'); // Redireciona automaticamente para a Página Inicial (Home)
+        navigate('/'); // Redireciona para a Página Inicial
         }
     } catch (err) {
         setErrorMsg(err.message);

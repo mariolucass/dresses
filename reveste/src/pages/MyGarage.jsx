@@ -123,7 +123,7 @@ export default function MyGarage() {
       {/* Cabeçalho responsivo */}
       <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'stretch', sm: 'center' }, gap: 2, mb: 4 }}>
         <Typography variant="h4" fontWeight="bold" sx={{ fontSize: { xs: '1.8rem', sm: '2.125rem' } }}>
-          Minha Garagem Virtual 🚗
+          Minha Garagem Virtual
         </Typography>
         <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenCreate} sx={{ py: 1.2, fontWeight: 'bold', textTransform: 'none' }}>
           Anunciar Desapego
@@ -235,7 +235,7 @@ export default function MyGarage() {
                 </Box>
               )}
 
-              {/* Mover Manualmente o Status */}
+              {/* Mudar Manualmente o Status */}
               <TextField
                 select
                 size="small"

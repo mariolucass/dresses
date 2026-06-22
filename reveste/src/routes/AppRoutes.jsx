@@ -6,16 +6,16 @@ import Profile from '../pages/Profile';
 import MyGarage from '../pages/MyGarage';
 import AdDetails from '../pages/AdDetails';
 import Wallet from '../pages/Wallet';
+import MinhasNegociacoes from '../pages/MinhasNegociacoes';
 import ProtectedRoute from '../components/ProtectedRoute';
 
 // Placeholder para rotas ainda não mapeadas fisicamente em arquivos dedicados
 const CadastroPlaceholder = () => <div style={{ padding: 40 }}><h2>Tela de Cadastro (Em breve)</h2></div>;
-const NegociacoesPlaceholder = () => <div style={{ padding: 40 }}><h2>Minhas Negociações (Em breve)</h2></div>;
 
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* MainLayout entrega o Header (Navbar) e Footer para todas as rotas de dentro */}
+      {/* MainLayout entrega o Navbar e Footer para todas as rotas de dentro */}
       <Route element={<MainLayout />}>
         
         {/* ROTAS PÚBLICAS */}
@@ -28,7 +28,7 @@ export default function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           <Route path="/perfil" element={<Profile />} />
           <Route path="/garagem" element={<MyGarage />} />
-          <Route path="/minhas-negociacoes" element={<NegociacoesPlaceholder />} />
+          <Route path="/minhas-negociacoes" element={<MinhasNegociacoes />} />
           <Route path="/carteira" element={<Wallet />} />
         </Route>
 

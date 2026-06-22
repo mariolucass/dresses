@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CustomThemeProvider } from './context/ThemeContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { StoreProvider } from './context/StoreContext.jsx';
+import { NegotiationProvider } from './context/NegotiationContext.jsx';
 import { storageService } from './services/storageService.js';
 
 storageService.init();
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <CustomThemeProvider>
         <AuthProvider>
           <StoreProvider>
-            <App />
+            <NegotiationProvider>
+              <App />
+            </NegotiationProvider>
           </StoreProvider>
         </AuthProvider>
       </CustomThemeProvider>

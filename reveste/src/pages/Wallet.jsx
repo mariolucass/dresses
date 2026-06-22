@@ -219,7 +219,7 @@ export default function Wallet() {
         <Card variant="outlined" sx={{ borderRadius: 3, bgcolor: 'action.hover', borderStyle: 'dashed' }}>
           <CardContent sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="caption" color="text.secondary">
-              ⚠️ <strong>Aviso:</strong> Integração com PIX em breve.
+              <strong>Aviso:</strong> Integração com PIX em breve.
             </Typography>
           </CardContent>
         </Card>
