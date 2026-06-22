@@ -7,15 +7,15 @@ import { adSchema } from '../validations/adValidation';
 import { 
   Container, Typography, Box, Button, Tabs, Tab, Card, 
   CardMedia, CardContent, CardActions, Dialog, DialogTitle, 
-  DialogContent, DialogActions, TextField, MenuItem, Stack 
+  DialogContent, DialogActions, TextField, MenuItem, Stack, Chip
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import LoopIcon from '@mui/icons-material/Loop';
 
 const FALLBACK_IMAGE = 'https://www.ype.ind.br/assets-NS/roupas-de-malha_ypedia-scaled.jpg?w=500';
 
-// MAPEAMENTO DAS CATEGORIAS
 const CATEGORIAS_OPCOES = [
   { value: 'camisa', label: 'CAMISA' },
   { value: 'calca', label: 'CALÇA' },
@@ -24,6 +24,13 @@ const CATEGORIAS_OPCOES = [
   { value: 'acessorio', label: 'ACESSÓRIO' },
   { value: 'outro', label: 'OUTRO' }
 ];
+
+const STATUS_CHIPS = {
+  disponivel: { label: 'Disponível', color: 'success' },
+  em_negociacao: { label: 'Em Negociação', color: 'warning' },
+  vendido: { label: 'Vendido', color: 'info' },
+  trocado: { label: 'Trocado', color: 'secondary' }
+};
 
 export default function MyGarage() {
   const { usuarioLogado } = useAuth();
@@ -37,8 +44,10 @@ export default function MyGarage() {
     resolver: zodResolver(adSchema),
   });
 
-  // Impede quebra caso o login mude de estado abruptamente
+  // Filtra apenas os anúncios pertencentes ao usuário logado
   const meusAnuncios = anuncios.filter((a) => a.usuarioId === usuarioLogado?.id);
+  
+  // SEPARAÇÃO DAS LISTAS
   const anunciosDisponiveis = meusAnuncios.filter((a) => a.status === 'disponivel');
   const anunciosEmNegociacao = meusAnuncios.filter((a) => a.status === 'em_negociacao');
   const anunciosFinalizados = meusAnuncios.filter((a) => a.status === 'vendido' || a.status === 'trocado');
@@ -71,11 +80,22 @@ export default function MyGarage() {
   const onSubmit = (data) => {
     try {
       if (editingAd) {
-        editarAnuncio(editingAd.id, data, usuarioLogado?.id);
+        // Preserva o status atual do anúncio ao editar
+        editarAnuncio(editingAd.id, { ...data, status: editingAd.status }, usuarioLogado?.id);
       } else {
         adicionarAnuncio(data, usuarioLogado?.id);
       }
       handleCloseModal();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  // MANIPULAÇÃO MANUAL DE STATUS
+  const handleStatusChange = (anuncio, novoStatus) => {
+    try {
+      // Reutiliza a estrutura de edição para aplicar a transição manual de status
+      editarAnuncio(anuncio.id, { ...anuncio, status: novoStatus }, usuarioLogado?.id);
     } catch (err) {
       alert(err.message);
     }
@@ -91,19 +111,38 @@ export default function MyGarage() {
     }
   };
 
+  const listaExibida = tabIndex === 0 
+    ? anunciosDisponiveis 
+    : tabIndex === 1 
+      ? anunciosEmNegociacao 
+      : anunciosFinalizados;
+
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, mt: 2 }}>
-        <Typography variant="h4" fontWeight="bold">Minha Garagem Virtual 🚗</Typography>
-        <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenCreate}>
+    <Container maxWidth="lg" sx={{ pt: { xs: 2, md: 4 }, pb: 6, px: { xs: 2, sm: 3 } }}>
+      
+      {/* Cabeçalho responsivo */}
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'stretch', sm: 'center' }, gap: 2, mb: 4 }}>
+        <Typography variant="h4" fontWeight="bold" sx={{ fontSize: { xs: '1.8rem', sm: '2.125rem' } }}>
+          Minha Garagem Virtual 🚗
+        </Typography>
+        <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenCreate} sx={{ py: 1.2, fontWeight: 'bold', textTransform: 'none' }}>
           Anunciar Desapego
         </Button>
       </Box>
 
-      <Tabs value={tabIndex} onChange={(e, newValue) => setTabIndex(newValue)} sx={{ mb: 3 }} indicatorColor="primary" textColor="primary">
-        <Tab label={`Disponíveis (${anunciosDisponiveis.length})`} />
-        <Tab label={`Em Negociação (${anunciosEmNegociacao.length})`} />
-        <Tab label={`Vendidos / Trocados (${anunciosFinalizados.length})`} />
+      {/* Abas de navegação */}
+      <Tabs 
+        value={tabIndex} 
+        onChange={(e, newValue) => setTabIndex(newValue)} 
+        sx={{ mb: 4, borderBottom: 1, borderColor: 'divider' }} 
+        variant="scrollable"
+        scrollButtons="auto"
+        indicatorColor="primary" 
+        textColor="primary"
+      >
+        <Tab label={`Disponíveis (${anunciosDisponiveis.length})`} sx={{ fontWeight: 'bold', textTransform: 'none' }} />
+        <Tab label={`Em Negociação (${anunciosEmNegociacao.length})`} sx={{ fontWeight: 'bold', textTransform: 'none' }} />
+        <Tab label={`Histórico (${anunciosFinalizados.length})`} sx={{ fontWeight: 'bold', textTransform: 'none' }} />
       </Tabs>
 
       <Box 
@@ -118,7 +157,7 @@ export default function MyGarage() {
           width: '100%'
         }}
       >
-        {((tabIndex === 0 ? anunciosDisponiveis : tabIndex === 1 ? anunciosEmNegociacao : anunciosFinalizados)).map((anuncio) => (
+        {listaExibida.map((anuncio) => (
           <Card 
             key={anuncio.id} 
             variant="outlined" 
@@ -126,63 +165,101 @@ export default function MyGarage() {
               height: '100%', 
               display: 'flex', 
               flexDirection: 'column', 
+              borderRadius: 3,
+              position: 'relative',
               minWidth: 0,
               overflow: 'hidden'
             }}
           >
+            {/* Tag indicando o status atual */}
+            <Chip 
+              label={STATUS_CHIPS[anuncio.status]?.label} 
+              color={STATUS_CHIPS[anuncio.status]?.color} 
+              size="small"
+              sx={{ position: 'absolute', top: 12, right: 12, fontWeight: 'bold', boxShadow: 2 }}
+            />
+
             <CardMedia
               component="img"
-              height="200"
+              height="180"
               image={anuncio.foto}
               alt={anuncio.titulo}
               onError={(e) => { e.target.src = FALLBACK_IMAGE; }}
               sx={{ objectFit: 'cover' }}
             />
             
-            <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+            <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2.5, minWidth: 0 }}>
               <Typography variant="h6" fontWeight="bold" noWrap sx={{ mb: 0.5 }}>
                 {anuncio.titulo}
               </Typography>
               
-              <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-                {anuncio.categoria.toUpperCase()} • Tam: {anuncio.tamanho}
+              <Typography variant="caption" color="textSecondary" fontWeight="bold" sx={{ mb: 1.5 }}>
+                {anuncio.categoria.toUpperCase()} • TAMANHO: {anuncio.tamanho} • {anuncio.conservacao.toUpperCase()}
               </Typography>
               
               <Box sx={{ flexGrow: 1, mb: 2, minWidth: 0 }}>
                 <Typography 
                   variant="body2" 
-                  color="text.primary" 
+                  color="text.secondary" 
                   sx={{ 
                     display: '-webkit-box', 
                     WebkitLineClamp: 2, 
                     WebkitBoxOrient: 'vertical', 
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    wordBreak: 'break-all',
-                    overflowWrap: 'anywhere'
+                    wordBreak: 'break-word'
                   }}
                 >
                   {anuncio.descricao}
                 </Typography>
               </Box>
               
-              <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', pt: 1, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                <Typography variant="subtitle2" color="secondary" fontWeight="bold">{anuncio.modalidade}</Typography>
+              <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', pt: 1.5, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                <Typography variant="subtitle2" color="secondary" fontWeight="bold">{anuncio.modalidade.toUpperCase()}</Typography>
                 <Typography variant="h6" color="primary" fontWeight="bold">{anuncio.vats} VATs</Typography>
               </Box>
             </CardContent>
             
-            {tabIndex === 0 && (
-              <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2, pt: 0 }}>
-                <Button size="small" startIcon={<EditIcon />} onClick={() => handleOpenEdit(anuncio)}>Editar</Button>
-                <Button size="small" color="error" startIcon={<DeleteIcon />} onClick={() => handleDelete(anuncio.id)}>Excluir</Button>
-              </CardActions>
-            )}
+            {/* Painel de ações */}
+            <CardActions sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, alignItems: 'stretch', px: 2.5, pb: 2.5, pt: 0 }}>
+              
+              {/* Edição/Exclusão apenas para anúncios NÃO CONCLUÍDOS */}
+              {anuncio.status !== 'vendido' && anuncio.status !== 'trocado' && (
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                  <Button size="small" startIcon={<EditIcon />} onClick={() => handleOpenEdit(anuncio)} sx={{ textTransform: 'none' }}>
+                    Editar
+                  </Button>
+                  <Button size="small" color="error" startIcon={<DeleteIcon />} onClick={() => handleDelete(anuncio.id)} sx={{ textTransform: 'none' }}>
+                    Excluir
+                  </Button>
+                </Box>
+              )}
+
+              {/* Mover Manualmente o Status */}
+              <TextField
+                select
+                size="small"
+                fullWidth
+                label="Mover Status"
+                value={anuncio.status}
+                onChange={(e) => handleStatusChange(anuncio, e.target.value)}
+                InputProps={{
+                  startAdornment: <LoopIcon sx={{ color: 'action.active', mr: 1, fontSize: '1.1rem' }} />
+                }}
+                sx={{ '& .MuiSelect-select': { py: 0.8, fontSize: '0.85rem' } }}
+              >
+                <MenuItem value="disponivel">Disponível</MenuItem>
+                <MenuItem value="em_negociacao">Em Negociação</MenuItem>
+                <MenuItem value="vendido">Vendido (Concluído)</MenuItem>
+                <MenuItem value="trocado">Trocado (Concluído)</MenuItem>
+              </TextField>
+
+            </CardActions>
           </Card>
         ))}
       </Box>
 
-      {/* FORMULÁRIO */}
+      {/* FORMULÁRIO DO MODAL */}
       <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
         <DialogTitle fontWeight="bold" sx={{ pt: 3, px: 3, pb: 1 }}>
           {editingAd ? 'Editar Dados do Anúncio' : 'Anunciar Peça no ReVeste'}
