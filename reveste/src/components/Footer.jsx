@@ -9,7 +9,7 @@ export default function Footer() {
       sx={{ 
         py: 4, 
         px: 2, 
-        mt: 'auto', // Joga o rodapé para o fim da página se o container pai for um Flexbox
+        mt: 'auto', // Joga o rodapé para o fim da página
         backgroundColor: (theme) => 
           theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
         borderTop: '1px solid',
@@ -27,7 +27,7 @@ export default function Footer() {
             textAlign: { xs: 'center', sm: 'left' }
           }}
         >
-          {/* Lado Esquerdo: Branding e Slogan */}
+
           <Box>
             <Typography variant="subtitle1" fontWeight="bold" color="text.primary" sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: { xs: 'center', sm: 'flex-start' } }}>
               ReVeste ♻️
@@ -37,7 +37,6 @@ export default function Footer() {
             </Typography>
           </Box>
           
-          {/* Lado Direito: Links de Navegação Rápidos */}
           <Stack 
             direction={{ xs: 'column', sm: 'row' }} 
             spacing={{ xs: 2, sm: 4 }}
@@ -58,7 +57,6 @@ export default function Footer() {
           </Stack>
         </Box>
         
-        {/* Linha Inferior: Copyright */}
         <Box 
           sx={{ 
             mt: 4, 

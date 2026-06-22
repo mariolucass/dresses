@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const adSchema = z.object({
   titulo: z.string().min(3, 'O título deve ter pelo menos 3 caracteres'),
   descricao: z.string().min(5, 'A descrição deve ter pelo menos 5 caracteres'),
-  categoria: z.enum(['camisa', 'calça', 'calçado', 'acessório', 'outras'], {
+  categoria: z.enum(['camisa', 'calca', 'calcado', 'acessorio', 'outro'], {
     errorMap: () => ({ message: 'Selecione uma categoria válida' }),
   }),
   tamanho: z.enum(['PP', 'P', 'M', 'G', 'GG'], {

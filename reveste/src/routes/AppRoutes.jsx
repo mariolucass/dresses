@@ -1,36 +1,36 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
-import { ProtectedRoute } from '../components/ProtectedRoute';
-
-// Importação das páginas
 import Home from '../pages/Home';
 import Login from '../pages/Login';
-import Explore from '../pages/Explore';
-import MyGarage from '../pages/MyGarage';
 import Profile from '../pages/Profile';
+import MyGarage from '../pages/MyGarage';
 import AdDetails from '../pages/AdDetails';
+import ProtectedRoute from '../components/ProtectedRoute';
+
+// Placeholder para rotas ainda não mapeadas fisicamente em arquivos dedicados
+const CadastroPlaceholder = () => <div style={{ padding: 40 }}><h2>Tela de Cadastro (Em breve)</h2></div>;
+const NegociacoesPlaceholder = () => <div style={{ padding: 40 }}><h2>Minhas Negociações (Em breve)</h2></div>;
 
 export default function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Rotas que usam a Navbar e o Footer padrão */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/ad/:id" element={<AdDetails />} />
-          
-          {/* Rotas Protegidas (Sextante de segurança) */}
-          <Route path="/garage" element={<ProtectedRoute><MyGarage /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+    <Routes>
+      {/* MainLayout entrega o Header (Navbar) e Footer para todas as rotas de dentro */}
+      <Route element={<MainLayout />}>
+        
+        {/* ================= ROTAS PÚBLICAS ================= */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<CadastroPlaceholder />} />
+        <Route path="/anuncio/:id" element={<AdDetails />} />
+
+        {/* ================= ROTAS PROTEGIDAS ================= */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/perfil" element={<Profile />} />
+          <Route path="/garagem" element={<MyGarage />} />
+          <Route path="/minhas-negociacoes" element={<NegociacoesPlaceholder />} />
         </Route>
 
-        {/* Rota de Login isolada */}
-        <Route path="/login" element={<Login />} />
-
-        {/* Rota de fuga: se digitar qualquer coisa errada, joga para a Home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+      </Route>
+    </Routes>
   );
 }

@@ -10,7 +10,7 @@ export function StoreProvider({ children }) {
   // Criar Anúncio
   const adicionarAnuncio = (dadosAnuncio, usuarioId) => {
     const novoAnuncio = {
-      id: `anuncio${uuidv4()}`,
+      id: `anc_${uuidv4()}`,
       usuarioId,
       ...dadosAnuncio,
       status: 'disponivel', // Status inicial obrigatório
@@ -19,7 +19,7 @@ export function StoreProvider({ children }) {
     setAnuncios([...anuncios, novoAnuncio]);
   };
 
-  // Editar Anúncio (Garante que só edita se for o dono e estiver disponível/em negociação)
+  // Editar Anúncio
   const editarAnuncio = (anuncioId, dadosEditados, usuarioId) => {
     setAnuncios((prevAnuncios) =>
       prevAnuncios.map((anuncio) => {
@@ -37,7 +37,7 @@ export function StoreProvider({ children }) {
     );
   };
 
-  // Excluir Anúncio (Garante que só o dono exclui)
+  // Excluir Anúncio
   const excluirAnuncio = (anuncioId, usuarioId) => {
     const anuncio = anuncios.find((a) => a.id === anuncioId);
     if (!anuncio) throw new Error('Anúncio não encontrado.');

@@ -13,7 +13,17 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const FALLBACK_IMAGE = 'https://static.devneon.com.br/assets/images/blog/aprenda/wp-content/uploads/2024/09/Quantas-pecas-de-roupa-preciso-para-abrir-uma-loja.webp?w=500';
+const FALLBACK_IMAGE = 'https://www.ype.ind.br/assets-NS/roupas-de-malha_ypedia-scaled.jpg?w=500';
+
+// MAPEAMENTO DAS CATEGORIAS
+const CATEGORIAS_OPCOES = [
+  { value: 'camisa', label: 'CAMISA' },
+  { value: 'calca', label: 'CALÇA' },
+  { value: 'casaco', label: 'CASACO' },
+  { value: 'calcado', label: 'CALÇADO' },
+  { value: 'acessorio', label: 'ACESSÓRIO' },
+  { value: 'outro', label: 'OUTRO' }
+];
 
 export default function MyGarage() {
   const { usuarioLogado } = useAuth();
@@ -27,7 +37,8 @@ export default function MyGarage() {
     resolver: zodResolver(adSchema),
   });
 
-  const meusAnuncios = anuncios.filter((a) => a.usuarioId === usuarioLogado.id);
+  // Impede quebra caso o login mude de estado abruptamente
+  const meusAnuncios = anuncios.filter((a) => a.usuarioId === usuarioLogado?.id);
   const anunciosDisponiveis = meusAnuncios.filter((a) => a.status === 'disponivel');
   const anunciosEmNegociacao = meusAnuncios.filter((a) => a.status === 'em_negociacao');
   const anunciosFinalizados = meusAnuncios.filter((a) => a.status === 'vendido' || a.status === 'trocado');
@@ -60,9 +71,9 @@ export default function MyGarage() {
   const onSubmit = (data) => {
     try {
       if (editingAd) {
-        editarAnuncio(editingAd.id, data, usuarioLogado.id);
+        editarAnuncio(editingAd.id, data, usuarioLogado?.id);
       } else {
-        adicionarAnuncio(data, usuarioLogado.id);
+        adicionarAnuncio(data, usuarioLogado?.id);
       }
       handleCloseModal();
     } catch (err) {
@@ -73,7 +84,7 @@ export default function MyGarage() {
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza de que deseja excluir permanentemente este anúncio?')) {
       try {
-        excluirAnuncio(id, usuarioLogado.id);
+        excluirAnuncio(id, usuarioLogado?.id);
       } catch (err) {
         alert(err.message);
       }
@@ -95,16 +106,15 @@ export default function MyGarage() {
         <Tab label={`Vendidos / Trocados (${anunciosFinalizados.length})`} />
       </Tabs>
 
-      {/* RENDERIZAÇÃO DOS CARDS COM CSS GRID DIRETO NO BOX */}
       <Box 
         sx={{ 
           display: 'grid', 
           gridTemplateColumns: {
-            xs: '1fr',                   // 1 card por linha em telas de celular
-            sm: 'repeat(2, 1fr)',        // 2 cards por linha em telas médias
-            md: 'repeat(3, 1fr)'         // 3 cards por linha em telas de computador
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)'
           },
-          gap: 3,                        // Espaçamento entre os cards
+          gap: 3,
           width: '100%'
         }}
       >
@@ -116,7 +126,7 @@ export default function MyGarage() {
               height: '100%', 
               display: 'flex', 
               flexDirection: 'column', 
-              minWidth: 0,               // Impede o card de esticar por causa de textos longos
+              minWidth: 0,
               overflow: 'hidden'
             }}
           >
@@ -138,7 +148,6 @@ export default function MyGarage() {
                 {anuncio.categoria.toUpperCase()} • Tam: {anuncio.tamanho}
               </Typography>
               
-              {/* Box container da descrição para garantir a distribuição do espaço */}
               <Box sx={{ flexGrow: 1, mb: 2, minWidth: 0 }}>
                 <Typography 
                   variant="body2" 
@@ -149,15 +158,14 @@ export default function MyGarage() {
                     WebkitBoxOrient: 'vertical', 
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    wordBreak: 'break-all',     // Quebra de textos sem espaços
-                    overflowWrap: 'anywhere'   // Garante compatibilidade extra de quebra de linha
+                    wordBreak: 'break-all',
+                    overflowWrap: 'anywhere'
                   }}
                 >
                   {anuncio.descricao}
                 </Typography>
               </Box>
               
-              {/* mt: 'auto' fixa o preço sempre colado no final do CardContent */}
               <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', pt: 1, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                 <Typography variant="subtitle2" color="secondary" fontWeight="bold">{anuncio.modalidade}</Typography>
                 <Typography variant="h6" color="primary" fontWeight="bold">{anuncio.vats} VATs</Typography>
@@ -174,7 +182,7 @@ export default function MyGarage() {
         ))}
       </Box>
 
-      {/* FORMULÁRIO (CRIAÇÃO E EDIÇÃO) */}
+      {/* FORMULÁRIO */}
       <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
         <DialogTitle fontWeight="bold" sx={{ pt: 3, px: 3, pb: 1 }}>
           {editingAd ? 'Editar Dados do Anúncio' : 'Anunciar Peça no ReVeste'}
@@ -186,7 +194,11 @@ export default function MyGarage() {
 
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <TextField select fullWidth variant="outlined" label="Categoria" defaultValue={editingAd?.categoria || ''} error={!!errors.categoria} helperText={errors.categoria?.message} {...register('categoria')}>
-                  {['camisa', 'calça', 'calçado', 'acessório'].map((cat) => <MenuItem key={cat} value={cat}>{cat.toUpperCase()}</MenuItem>)}
+                  {CATEGORIAS_OPCOES.map((cat) => (
+                    <MenuItem key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </MenuItem>
+                  ))}
                 </TextField>
 
                 <TextField select fullWidth variant="outlined" label="Tamanho" defaultValue={editingAd?.tamanho || ''} error={!!errors.tamanho} helperText={errors.tamanho?.message} {...register('tamanho')}>

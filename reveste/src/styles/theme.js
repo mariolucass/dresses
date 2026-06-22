@@ -4,10 +4,10 @@ export const createAppTheme = (mode) => createTheme({
   palette: {
     mode: mode, // 'light' ou 'dark'
     primary: {
-      main: mode === 'light' ? '#2e7d32' : '#4caf50', // Verde sustentável
+      main: mode === 'light' ? '#2e7d32' : '#4caf50', // Verde
     },
     secondary: {
-      main: '#9c27b0', // Roxo focado na moeda virtual VAT e trocas
+      main: '#9c27b0', // Roxo
     },
     background: {
       default: mode === 'light' ? '#fcfcfc' : '#121212',
@@ -22,6 +22,6 @@ export const createAppTheme = (mode) => createTheme({
     },
   },
   shape: {
-    borderRadius: 8, // Bordas suavemente arredondadas combinando com a identidade visual limpa
+    borderRadius: 8, // Bordas suavemente arredondadas
   },
 });

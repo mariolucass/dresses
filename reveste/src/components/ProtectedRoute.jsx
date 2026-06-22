@@ -1,13 +1,9 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-export function ProtectedRoute({ children }) {
+export default function ProtectedRoute() {
   const { isAuthenticated } = useAuth();
 
-  if (!isAuthenticated) {
-    // Redireciona para o login mantendo o histórico limpo
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
+  // Se estiver autenticado, renderiza as páginas filhas. Se não, manda para o login.
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 }

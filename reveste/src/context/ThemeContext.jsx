@@ -7,7 +7,7 @@ import { createAppTheme } from '../styles/theme';
 const CustomThemeContext = createContext();
 
 export function CustomThemeProvider({ children }) {
-  // Salva a preferência do tema no localStorage (padrão é light)
+  // Salva a preferência do tema no localStorage
   const [mode, setMode] = useLocalStorage('reveste_theme_mode', 'light');
 
   const toggleTheme = () => {
@@ -20,7 +20,7 @@ export function CustomThemeProvider({ children }) {
   return (
     <CustomThemeContext.Provider value={{ mode, toggleTheme }}>
       <ThemeProvider theme={theme}>
-        {/* CssBaseline aplica o reset de CSS padrão do Material Design e muda o fundo de acordo com o tema */}
+        {/* Reset de CSS padrão do Material Design e muda o fundo de acordo com o tema */}
         <CssBaseline />
         {children}
       </ThemeProvider>
@@ -28,5 +28,5 @@ export function CustomThemeProvider({ children }) {
   );
 }
 
-// Hook customizado para usar o tema facilmente em qualquer botão de switch
+// Hook para usar o tema facilmente em qualquer botão de switch
 export const useAppTheme = () => useContext(CustomThemeContext);
