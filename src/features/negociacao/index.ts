@@ -1,0 +1,22 @@
+export { createPropostaService } from "./api/create-proposta";
+export {
+  aceitarPropostaService,
+  calcularEquivalencia,
+  cancelarPropostaService,
+  concluirNegociacaoService,
+  getNegociacaoRelations,
+  recusarPropostaService,
+} from "./api/negociacao-actions";
+export {
+  fetchNegociacaoById,
+  fetchNegociacaoHistory,
+  fetchNegociacoes,
+} from "./api/fetch-negociacoes";
+export { respondPropostaService } from "./api/respond-proposta";
+export { propostaSchema } from "./model/negociacao-schemas";
+export type { PropostaFormData } from "./model/negociacao-schemas";
+export { useNegociacaoStore } from "./model/negociacao-store";
+export { ContrapropostaModal } from "./ui/contraproposta-modal";
+export { NegociacaoTimeline } from "./ui/negociacao-timeline";
+export { PropostaCard } from "./ui/proposta-card";
+export { PropostaForm } from "./ui/proposta-form";
