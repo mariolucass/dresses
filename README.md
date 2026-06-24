@@ -166,7 +166,11 @@ git add .
 yarn commit  # Um wizard interativo no terminal vai te guiar
 git push
 ```
-
+## ✨ Screenshot
+![pagina-de-login](assets/login.png)
+![cadastro](assets/cadastro.png)
+![landing](assets/landing.png)
+![anuncios](assets/anuncios.png)
 ---
 
 <div align="center">
