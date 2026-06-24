@@ -1,4 +1,4 @@
-export type TipoMensagem = 'TEXTO' | 'SISTEMA';
+export type TipoMensagem = "TEXTO" | "SISTEMA" | "CONTRAPROPOSTA";
 
 export interface Mensagem {
   id: string;
@@ -6,6 +6,7 @@ export interface Mensagem {
   remetenteId: string;
   texto: string;
   tipo: TipoMensagem;
+  propostaId?: string;
   lida: boolean;
   createdAt: string;
 }

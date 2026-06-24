@@ -1,6 +1,6 @@
 /**
  * Abstração de localStorage com tipagem genérica.
- * Toda a persistência do Brechó Online passa por este módulo.
+ * Toda a persistência do Desapeguei passa por este módulo.
  */
 
 export const storage = {
@@ -8,7 +8,7 @@ export const storage = {
    * Recupera um item do localStorage com tipagem.
    */
   getItem<T>(key: string): T | null {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
     try {
       const raw = window.localStorage.getItem(key);
       if (raw === null) return null;
@@ -23,9 +23,10 @@ export const storage = {
    * Salva um item no localStorage.
    */
   setItem<T>(key: string, value: T): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
+      window.dispatchEvent(new StorageEvent("storage", { key }));
     } catch {
       console.error(`[storage.setItem] Erro ao salvar chave "${key}".`);
     }
@@ -35,8 +36,9 @@ export const storage = {
    * Remove um item do localStorage.
    */
   removeItem(key: string): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     window.localStorage.removeItem(key);
+    window.dispatchEvent(new StorageEvent("storage", { key }));
   },
 
   /**
@@ -76,7 +78,10 @@ export const storage = {
   /**
    * Remove um item de uma coleção pelo campo `id`.
    */
-  removeFromCollection<T extends { id: string }>(key: string, id: string): boolean {
+  removeFromCollection<T extends { id: string }>(
+    key: string,
+    id: string,
+  ): boolean {
     const collection = this.getCollection<T>(key);
     const filtered = collection.filter((item) => item.id !== id);
     if (filtered.length === collection.length) return false;
@@ -88,19 +93,20 @@ export const storage = {
    * Limpa todo o localStorage (usar apenas em dev/seed).
    */
   clear(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     window.localStorage.clear();
+    window.dispatchEvent(new StorageEvent("storage"));
   },
 };
 
-/** Chaves do localStorage — fonte única de verdade para keys */
+/** Chaves do localStorage - fonte única de verdade para keys */
 export const STORAGE_KEYS = {
-  USERS: 'brecho:users',
-  ANUNCIOS: 'brecho:anuncios',
-  PROPOSTAS: 'brecho:propostas',
-  MENSAGENS: 'brecho:mensagens',
-  AVALIACOES: 'brecho:avaliacoes',
-  TRANSACOES_VAT: 'brecho:transacoes_vat',
-  SESSION: 'brecho:session',
-  SEEDED: 'brecho:seeded',
+  USERS: "brecho:users",
+  ANUNCIOS: "brecho:anuncios",
+  PROPOSTAS: "brecho:propostas",
+  MENSAGENS: "brecho:mensagens",
+  AVALIACOES: "brecho:avaliacoes",
+  TRANSACOES_VAT: "brecho:transacoes_vat",
+  SESSION: "brecho:session",
+  SEEDED: "brecho:seeded",
 } as const;

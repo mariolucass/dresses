@@ -5,66 +5,94 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 8%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 8%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --popover-foreground: 0 0% 8%;
+    --primary: 73 86% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 90%;
+    --secondary-foreground: 0 0% 8%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 0 0% 90%;
+    --accent-foreground: 0 0% 8%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 0% / 0.08;
+    --input: 0 0% 0% / 0.14;
+    --ring: 73 86% 40%;
+    --radius: 0.625rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    --theme-ink: #FFFFFF;
+    --theme-surface: #F8F8F8;
+    --theme-surface2: #F0F0F0;
+    --theme-surface3: #E8E8E8;
+    --theme-text-primary: #141414;
+    --theme-text-secondary: rgba(20, 20, 20, 0.60);
+    --theme-text-muted: rgba(20, 20, 20, 0.40);
+    --theme-text-subtle: rgba(20, 20, 20, 0.22);
+    --theme-text-inverted: #F0F0EE;
+    --theme-border: rgba(0, 0, 0, 0.08);
+    --theme-border-hover: rgba(0, 0, 0, 0.14);
+    --theme-border-strong: rgba(0, 0, 0, 0.22);
+    --theme-bg-overlay: rgba(255, 255, 255, 0.6);
+    --theme-bg-surface-hover: rgba(0, 0, 0, 0.04);
+    --theme-header-bg: rgba(255, 255, 255, 0.92);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    color-scheme: dark;
+    --background: 0 0% 8%;
+    --foreground: 60 6% 94%;
+    --card: 0 0% 11%;
+    --card-foreground: 60 6% 94%;
+    --popover: 0 0% 11%;
+    --popover-foreground: 60 6% 94%;
+    --primary: 73 86% 58%;
+    --primary-foreground: 0 0% 7%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 60 6% 94%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 60 3% 60%;
+    --accent: 0 0% 17%;
+    --accent-foreground: 60 6% 94%;
+    --destructive: 0 100% 71%;
+    --destructive-foreground: 0 0% 7%;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.14;
+    --ring: 73 86% 58%;
+
+    --theme-ink: #141414;
+    --theme-surface: #1C1C1C;
+    --theme-surface2: #242424;
+    --theme-surface3: #2C2C2C;
+    --theme-text-primary: #F0F0EE;
+    --theme-text-secondary: rgba(240, 240, 238, 0.60);
+    --theme-text-muted: rgba(240, 240, 238, 0.40);
+    --theme-text-subtle: rgba(240, 240, 238, 0.22);
+    --theme-text-inverted: #111111;
+    --theme-border: rgba(255, 255, 255, 0.08);
+    --theme-border-hover: rgba(255, 255, 255, 0.14);
+    --theme-border-strong: rgba(255, 255, 255, 0.22);
+    --theme-bg-overlay: rgba(0, 0, 0, 0.6);
+    --theme-bg-surface-hover: rgba(255, 255, 255, 0.04);
+    --theme-header-bg: rgba(20, 20, 20, 0.92);
   }
 }
 
 @layer base {
   * {
-    border-color: var(--color-border);
+    border-color: hsl(var(--border));
   }
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 }

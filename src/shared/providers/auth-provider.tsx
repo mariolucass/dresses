@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { UserSession } from '@entities/user/model/user.types';
-import { storage, STORAGE_KEYS } from '@shared/lib/storage';
-import { seedDatabase } from '@shared/lib/seed';
+import type { UserSession } from "@entities/user/model/user.types";
+import { seedDatabase } from "@shared/lib/seed";
+import { storage, STORAGE_KEYS } from "@shared/lib/storage";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextValue {
   session: UserSession | null;
@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
   if (!ctx) {
-    throw new Error('useAuth deve ser usado dentro de <AuthProvider>.');
+    throw new Error("useAuth deve ser usado dentro de <AuthProvider>.");
   }
   return ctx;
 }

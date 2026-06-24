@@ -1,4 +1,4 @@
-import { fontSans, fontSerif } from "@/shared/config/fonts";
+import { fontDisplay, fontSans } from "@/shared/config/fonts";
 import { cn } from "@/shared/lib/utils";
 import "./globals.css";
 
@@ -21,13 +21,13 @@ export default function RootLayout({
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable,
-          fontSerif.variable,
+          fontDisplay.variable,
         )}
       >
         <QueryProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >

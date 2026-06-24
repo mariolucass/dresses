@@ -1,19 +1,23 @@
-import type { Avaliacao, CreateAvaliacaoDto } from '@entities/avaliacao/model/avaliacao.types';
-import type { User } from '@entities/user/model/user.types';
-import { storage, STORAGE_KEYS } from '@shared/lib/storage';
-import { generateId, now } from '@shared/lib/id-generator';
-import type { OperationResult } from '@shared/types/common.types';
+import type {
+  Avaliacao,
+  CreateAvaliacaoDto,
+} from "@entities/avaliacao/model/avaliacao.types";
+import type { User } from "@entities/user/model/user.types";
+import { generateId, now } from "@shared/lib/id-generator";
+import { storage, STORAGE_KEYS } from "@shared/lib/storage";
+import type { OperationResult } from "@shared/types/common.types";
 
 export function createAvaliacaoService(
   avaliadorId: string,
-  dto: Omit<CreateAvaliacaoDto, 'avaliadorId'>,
+  dto: Omit<CreateAvaliacaoDto, "avaliadorId">,
 ): OperationResult<Avaliacao> {
   // Impede avaliação duplicada
   const avaliacoes = storage.getCollection<Avaliacao>(STORAGE_KEYS.AVALIACOES);
   const duplicada = avaliacoes.some(
     (a) => a.negociacaoId === dto.negociacaoId && a.avaliadorId === avaliadorId,
   );
-  if (duplicada) return { success: false, error: 'Você já avaliou esta negociação.' };
+  if (duplicada)
+    return { success: false, error: "Você já avaliou esta negociação." };
 
   const novaAvaliacao: Avaliacao = {
     ...dto,

@@ -1,5 +1,17 @@
 export { createPropostaService } from "./api/create-proposta";
-export { fetchNegociacaoById, fetchNegociacoes } from "./api/fetch-negociacoes";
+export {
+  aceitarPropostaService,
+  calcularEquivalencia,
+  cancelarPropostaService,
+  concluirNegociacaoService,
+  getNegociacaoRelations,
+  recusarPropostaService,
+} from "./api/negociacao-actions";
+export {
+  fetchNegociacaoById,
+  fetchNegociacaoHistory,
+  fetchNegociacoes,
+} from "./api/fetch-negociacoes";
 export { respondPropostaService } from "./api/respond-proposta";
 export { propostaSchema } from "./model/negociacao-schemas";
 export type { PropostaFormData } from "./model/negociacao-schemas";

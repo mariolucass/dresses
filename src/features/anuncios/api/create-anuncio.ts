@@ -11,6 +11,8 @@ export function createAnuncioService(
 ): OperationResult<Anuncio> {
   const newAnuncio: Anuncio = {
     ...dto,
+    preco: dto.tipo === "TROCA" ? undefined : dto.preco,
+    valorVAT: dto.tipo === "VENDA" ? undefined : dto.valorVAT,
     id: generateId(),
     status: "DISPONIVEL",
     views: 0,

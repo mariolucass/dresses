@@ -8,6 +8,7 @@ export const propostaSchema = z
     valorOfertado: z.coerce.number().positive().optional(),
     vatOfertado: z.coerce.number().positive().optional(),
     itensOfertados: z.array(z.object({ anuncioId: z.string() })).default([]),
+    itensDesejados: z.array(z.object({ anuncioId: z.string() })).default([]),
     mensagemInicial: z.string().max(500).optional(),
   })
   .refine((d) => d.tipo !== "COMPRA" || !!d.valorOfertado, {

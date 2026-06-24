@@ -12,6 +12,9 @@ export const ROUTES = {
   NEGOCIACOES: "/negociacoes",
   NEGOCIACAO_DETALHE: (id: string) => `/negociacoes/${id}`,
   PERFIL: "/perfil",
+  PERFIL_AVALIACOES: "/perfil/avaliacoes",
+  PERFIL_AVALIACAO_DETALHE: (id: string) => `/perfil/avaliacoes/${id}`,
+  CARTEIRA: "/perfil/carteira",
 } as const;
 
 export type AppRoute = typeof ROUTES;

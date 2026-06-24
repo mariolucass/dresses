@@ -1,12 +1,16 @@
-import type { User, UserSession, CreateUserDto } from '@entities/user/model/user.types';
-import { storage, STORAGE_KEYS } from '@shared/lib/storage';
-import { generateId, now } from '@shared/lib/id-generator';
-import type { OperationResult } from '@shared/types/common.types';
+import type {
+  CreateUserDto,
+  User,
+  UserSession,
+} from "@entities/user/model/user.types";
+import { generateId, now } from "@shared/lib/id-generator";
+import { storage, STORAGE_KEYS } from "@shared/lib/storage";
+import type { OperationResult } from "@shared/types/common.types";
 
 const SESSION_DURATION_HOURS = 24;
 
 export function registerService(
-  dto: Omit<CreateUserDto, 'senha'> & { senha: string },
+  dto: Omit<CreateUserDto, "senha"> & { senha: string },
 ): OperationResult<UserSession> {
   const users = storage.getCollection<User>(STORAGE_KEYS.USERS);
   const exists = users.some(
@@ -14,7 +18,7 @@ export function registerService(
   );
 
   if (exists) {
-    return { success: false, error: 'Este e-mail já está cadastrado.' };
+    return { success: false, error: "Este e-mail já está cadastrado." };
   }
 
   const newUser: User = {
@@ -24,7 +28,7 @@ export function registerService(
     senha: `hashed_${dto.senha}`,
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(dto.nome)}`,
     saldoVAT: 50, // bônus inicial
-    role: dto.role ?? 'AMBOS',
+    role: dto.role ?? "AMBOS",
     avaliacaoMedia: 0,
     totalAvaliacoes: 0,
     createdAt: now(),

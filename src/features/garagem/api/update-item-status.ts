@@ -1,7 +1,10 @@
-import type { StatusAnuncio, Anuncio } from '@entities/anuncio/model/anuncio.types';
-import { storage, STORAGE_KEYS } from '@shared/lib/storage';
-import { now } from '@shared/lib/id-generator';
-import type { OperationResult } from '@shared/types/common.types';
+import type {
+  Anuncio,
+  StatusAnuncio,
+} from "@entities/anuncio/model/anuncio.types";
+import { now } from "@shared/lib/id-generator";
+import { storage, STORAGE_KEYS } from "@shared/lib/storage";
+import type { OperationResult } from "@shared/types/common.types";
 
 export function updateItemStatusService(
   anuncioId: string,
@@ -12,6 +15,7 @@ export function updateItemStatusService(
     anuncioId,
     { status, updatedAt: now() },
   );
-  if (!updated) return { success: false, error: 'Item não encontrado na garagem.' };
+  if (!updated)
+    return { success: false, error: "Item não encontrado na garagem." };
   return { success: true, data: updated };
 }

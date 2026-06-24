@@ -1,180 +1,235 @@
 /**
  * ─────────────────────────────────────────────────────────────────
- *  Dresses — Design System Tokens
+ *  Brechó - Design System Tokens
  *  src/lib/theme.ts
  *
- *  Altere aqui para refletir em TODA a aplicação automaticamente.
- *  Nunca use valores de cor ou espaçamento hard-coded nos componentes.
+ *  Direção visual: "Mercado Noturno Urbano"
+ *  Grafite profundo + lime elétrico + terracota de negociação.
+ *  A assinatura é a etiqueta de preço física nos cards de produto.
+ *
+ *  Fontes necessárias (em globals.css ou <head>):
+ *  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap');
+ *
+ *  tailwind.config.ts:
+ *    fontFamily: {
+ *      display: ['Barlow Condensed', 'sans-serif'],
+ *      sans:    ['Inter', 'sans-serif'],
+ *    }
  * ─────────────────────────────────────────────────────────────────
  */
 
 // ─── 1. BRAND PALETTE ────────────────────────────────────────────────────────
-// Cores institucionais Dresses. Não altere sem aprovação de identidade visual.
+// Cores institucionais do Brechó. Não altere sem revisão de identidade visual.
 
 export const brand = {
-  // Primárias
-  orange: "#F18903", // Laranja principal — CTAs, destaques
-  orangeLight: "#F5A835", // Hover / variante clara
-  orangeDark: "#C46F02", // Active / pressed state
-  orangeAlpha10: "#F1890318", // Fundo transparente de badges/pills
-  orangeAlpha20: "#F1890333", // Hover de itens com fundo laranja
-  orangeAlpha40: "#F1890366", // Bordas visíveis em fundo escuro
+  // Lime - primária (CTA, preços, destaques positivos)
+  lime: "#C8F135",
+  limeLight: "#D6F55C",
+  limeDark: "#A8CE1F",
+  limeAlpha10: "rgba(200,241,53,0.10)",
+  limeAlpha15: "rgba(200,241,53,0.15)",
+  limeAlpha30: "rgba(200,241,53,0.30)",
 
-  // Navy (fundo principal)
-  navy: "#151152", // Fundo base, header dark, seções primárias
-  navyMid: "#1D1870", // Gradiente médio, cards dark
-  navyLight: "#232296", // Gradiente claro, bordas suaves
-  navyDeep: "#0A0930", // Fundo de seções alternadas (mais escuro)
-  navyAlpha80: "rgba(21,17,82,0.8)",
-  navyAlpha60: "rgba(21,17,82,0.6)",
+  // Terra - secundária (venda, oferta, ação de negociação)
+  terra: "#E8694A",
+  terraLight: "#ED8066",
+  terraDark: "#C44F32",
+  terraAlpha10: "rgba(232,105,74,0.10)",
+  terraAlpha12: "rgba(232,105,74,0.12)",
+  terraAlpha30: "rgba(232,105,74,0.30)",
 
-  // Sky (azul celeste — acento secundário)
-  sky: "#006CC4", // Acento secundário, ícones, links ativos
-  skyLight: "#0084EE", // Hover
-  skyDark: "#0058A0", // Active / pressed
-  skyAlpha10: "#006CC418",
-  skyAlpha20: "#006CC433",
-  skyAlpha40: "#006CC466",
+  // Violet - troca direta (modalidade exclusiva de troca)
+  violet: "#A78BFA",
+  violetLight: "#BBA7FB",
+  violetDark: "#8B6CF7",
+  violetAlpha10: "rgba(167,139,250,0.10)",
+  violetAlpha12: "rgba(167,139,250,0.12)",
+  violetAlpha30: "rgba(167,139,250,0.30)",
 
-  // Neutros
+  // Ink - fundos (escala de grafite)
+  ink: "#141414", // fundo base (mais escuro)
+  surface: "#1C1C1C", // cards, modais, painéis
+  surface2: "#242424", // inputs, listrows alternados
+  surface3: "#2C2C2C", // hover states de surface
+
+  // Texto
+  text: "#F0F0EE", // texto principal (quase branco, não branco puro)
+
+  // Utilitários
   white: "#FFFFFF",
-  systemGray: "#F5F5F7",
-  offWhite: "#F4F6FB", // Fundo de seções claras
-  slate50: "#F8FAFC",
-  slate100: "#F1F5F9",
 } as const;
 
 // ─── 2. SEMANTIC COLOR ALIASES ───────────────────────────────────────────────
-// Use esses aliases nos componentes — nunca os valores brutos do brand acima.
+// Use esses aliases nos componentes - nunca os valores brutos do brand acima.
 
 export const color = {
-  // Interface
-  primary: brand.orange,
-  primaryHover: brand.orangeLight,
-  primaryActive: brand.orangeDark,
-  primaryFg: brand.navy, // texto sobre fundo primário
+  // ── Primária (CTA, preços, confirmação)
+  primary: brand.lime,
+  primaryHover: brand.limeLight,
+  primaryActive: brand.limeDark,
+  primaryFg: "#111111", // texto escuro sobre fundo lime
 
-  secondary: brand.sky,
-  secondaryHover: brand.skyLight,
-  secondaryActive: brand.skyDark,
-  secondaryFg: brand.white,
+  // ── Venda (modalidade de venda com negociação de preço)
+  sell: brand.terra,
+  sellHover: brand.terraLight,
+  sellActive: brand.terraDark,
+  sellFg: brand.white,
+  sellBg: brand.terraAlpha12,
+  sellBorder: brand.terraAlpha30,
 
-  // Backgrounds
-  bgBase: brand.navy,
-  bgMid: brand.navyMid,
-  bgDeep: brand.navyDeep,
-  bgSurface: "rgba(255,255,255,0.03)",
-  bgSurfaceHover: "rgba(255,255,255,0.06)",
-  bgLight: brand.offWhite, // páginas claras (ex: landing pública)
+  // ── Troca (modalidade de troca direta sem dinheiro)
+  swap: brand.violet,
+  swapHover: brand.violetLight,
+  swapActive: brand.violetDark,
+  swapFg: brand.white,
+  swapBg: brand.violetAlpha12,
+  swapBorder: brand.violetAlpha30,
 
-  // Texto
-  textPrimary: brand.white,
-  textSecondary: "rgba(255,255,255,0.70)",
-  textMuted: "rgba(255,255,255,0.45)",
-  textSubtle: "rgba(255,255,255,0.25)",
-  textInverted: brand.navy, // texto escuro sobre fundo claro
+  // ── Backgrounds
+  bgBase: "var(--theme-ink)",
+  bgSurface: "var(--theme-surface)",
+  bgSurface2: "var(--theme-surface2)",
+  bgSurface3: "var(--theme-surface3)",
+  bgOverlay: "var(--theme-bg-overlay)", // modal backdrop
+  bgSurfaceHover: "var(--theme-bg-surface-hover)",
 
-  // Bordas
-  border: "rgba(255,255,255,0.08)",
-  borderHover: "rgba(255,255,255,0.16)",
-  borderStrong: "rgba(255,255,255,0.24)",
-  borderPrimary: brand.orangeAlpha40,
-  borderSecondary: brand.skyAlpha40,
+  // ── Texto
+  textPrimary: "var(--theme-text-primary)",
+  textSecondary: "var(--theme-text-secondary)",
+  textMuted: "var(--theme-text-muted)",
+  textSubtle: "var(--theme-text-subtle)",
+  textInverted: "var(--theme-text-inverted)", // texto escuro sobre fundos lime/claros
 
-  // Estados de feedback
-  success: "#10b981",
-  successBg: "rgba(16,185,129,0.10)",
-  successBorder: "rgba(16,185,129,0.25)",
+  // ── Bordas
+  border: "var(--theme-border)",
+  borderHover: "var(--theme-border-hover)",
+  borderStrong: "var(--theme-border-strong)",
+  borderPrimary: brand.limeAlpha30,
+  borderSell: brand.terraAlpha30,
+  borderSwap: brand.violetAlpha30,
 
-  warning: "#f59e0b",
-  warningBg: "rgba(245,158,11,0.10)",
-  warningBorder: "rgba(245,158,11,0.25)",
+  // ── Feedback semântico
+  success: "#4ECDC4",
+  successBg: "rgba(78,205,196,0.10)",
+  successBorder: "rgba(78,205,196,0.28)",
 
-  error: "#f43f5e",
-  errorBg: "rgba(244,63,94,0.10)",
-  errorBorder: "rgba(244,63,94,0.25)",
+  warning: "#FFD166",
+  warningBg: "rgba(255,209,102,0.10)",
+  warningBorder: "rgba(255,209,102,0.28)",
 
-  info: "#06b6d4",
-  infoBg: "rgba(6,182,212,0.10)",
-  infoBorder: "rgba(6,182,212,0.25)",
+  error: "#FF6B6B",
+  errorBg: "rgba(255,107,107,0.10)",
+  errorBorder: "rgba(255,107,107,0.28)",
+
+  info: "#A0A0A0", // slate - neutro informativo
+  infoBg: "rgba(160,160,160,0.10)",
+  infoBorder: "rgba(160,160,160,0.25)",
 } as const;
 
 // ─── 3. GRADIENTS ─────────────────────────────────────────────────────────────
 
 export const gradient = {
-  // Backgrounds de página/seção
-  hero: `linear-gradient(160deg, ${brand.navy} 0%, ${brand.navyMid} 60%, ${brand.navy} 100%)`,
-  heroDeep: `linear-gradient(160deg, ${brand.navyDeep} 0%, ${brand.navy} 40%, ${brand.navyMid} 70%, ${brand.navyDeep} 100%)`,
-  section: `linear-gradient(160deg, ${brand.navyMid} 0%, ${brand.navy} 100%)`,
-  sectionAlt: `linear-gradient(160deg, ${brand.navy} 0%, ${brand.navyDeep} 100%)`,
+  // Linha decorativa de topo (hero, header)
+  accentLine: `linear-gradient(90deg, ${brand.lime} 0%, ${brand.terra} 55%, transparent 100%)`,
+  accentLineFull: `linear-gradient(90deg, ${brand.lime}, ${brand.violet}, ${brand.terra})`,
 
-  // Elementos de UI
-  cta: `linear-gradient(135deg, ${brand.orange}, ${brand.orangeLight})`,
-  ctaHover: `linear-gradient(135deg, ${brand.orangeLight}, ${brand.orange})`,
-  navy: `linear-gradient(135deg, ${brand.navy}, ${brand.navyMid})`,
-  sky: `linear-gradient(135deg, ${brand.sky}, ${brand.skyLight})`,
+  // Fundo de seções
+  section: `linear-gradient(160deg, var(--theme-surface) 0%, var(--theme-ink) 100%)`,
+  sectionAlt: `linear-gradient(160deg, var(--theme-ink) 0%, var(--theme-surface) 100%)`,
+  hero: `linear-gradient(160deg, var(--theme-ink) 0%, var(--theme-surface2) 60%, var(--theme-ink) 100%)`,
 
-  // Decorativos
-  topBar: `linear-gradient(90deg, ${brand.navy} 0%, ${brand.navyMid} 60%, ${brand.navy} 100%)`,
-  accentLine: `linear-gradient(90deg, ${brand.orange} 0%, ${brand.sky} 50%, transparent 100%)`,
-  orangeFade: `linear-gradient(90deg, ${brand.orange}, transparent)`,
-  glowOrange: `radial-gradient(circle, ${brand.orange}, transparent)`,
-  glowSky: `radial-gradient(circle, ${brand.sky}, transparent)`,
+  // Botão CTA
+  cta: `linear-gradient(135deg, ${brand.lime}, ${brand.limeLight})`,
+  ctaHover: `linear-gradient(135deg, ${brand.limeLight}, ${brand.lime})`,
+
+  // Cards de modalidade
+  sellCard: `linear-gradient(135deg, ${brand.terraAlpha10}, transparent)`,
+  swapCard: `linear-gradient(135deg, ${brand.violetAlpha10}, transparent)`,
+
+  // Overlay de imagem nos cards de produto
+  cardImageOverlay: `linear-gradient(to top, var(--theme-surface) 0%, transparent 60%)`,
+
+  // Glows (usar como box-shadow, não background)
+  glowLime: `0 0 48px rgba(200,241,53,0.18)`,
+  glowTerra: `0 0 48px rgba(232,105,74,0.18)`,
+  glowViolet: `0 0 48px rgba(167,139,250,0.18)`,
 } as const;
 
 // ─── 4. TYPOGRAPHY ────────────────────────────────────────────────────────────
-// Use `font-serif` e `font-sans` via Tailwind classes.
-// Defina as famílias reais em tailwind.config.ts → theme.fontFamily.
-// Nunca injete fontFamily diretamente em style={{}}.
+// `font-display` → Barlow Condensed (headings, preços, CTAs)
+// `font-sans`    → Inter (corpo, labels, UI)
+// Configure em tailwind.config.ts → theme.fontFamily
 
 export const typography = {
-  // Sizes — use via Tailwind (text-xs, text-sm, text-base…)
-  // Weights — use via Tailwind (font-normal, font-semibold, font-bold, font-black)
+  // Famílias (referência - defina no Tailwind config)
+  familyDisplay: "'Barlow Condensed', sans-serif",
+  familyBody: "'Inter', sans-serif",
 
-  // Tracking presets para headings (aplique via className)
-  trackingDisplay: "tracking-tight", // para títulos grandes
-  trackingLabel: "tracking-widest", // para labels/eyebrows uppercase
-  trackingBody: "tracking-normal",
+  // Pesos - use via Tailwind (font-normal, font-semibold, font-bold, font-black)
+  // Sizes - use via Tailwind (text-xs … text-7xl)
 
-  // Leading presets
-  leadingDisplay: "leading-[0.9]", // hero titles
-  leadingHeading: "leading-snug",
-  leadingBody: "leading-relaxed",
+  // Tracking
+  trackingDisplay: "tracking-tight", // -0.01em - grandes títulos
+  trackingHeading: "tracking-normal", // headings médios
+  trackingLabel: "tracking-widest", // labels uppercase, eyebrows
+  trackingButton: "tracking-wide", // botões uppercase (font-display)
+
+  // Leading
+  leadingDisplay: "leading-[0.92]", // hero gigante
+  leadingHeading: "leading-none", // H1, H2 (Barlow Condensed)
+  leadingBody: "leading-relaxed", // parágrafos (Inter)
+
+  // Regras de uso:
+  // - Títulos de página → font-display font-black text-5xl+ uppercase
+  // - Seção / card title → font-display font-bold text-xl text-2xl
+  // - Preços → font-display font-black text-2xl+ text-primary
+  // - Labels / eyebrows → font-sans font-semibold text-[10px] uppercase tracking-widest
+  // - Corpo → font-sans font-normal text-sm leading-relaxed
+  // - Metadados → font-mono text-xs (Courier New / system-ui mono)
 } as const;
 
 // ─── 5. SPACING ───────────────────────────────────────────────────────────────
 
 export const spacing = {
-  sectionY: "py-20",
-  sectionYLg: "py-28",
-  containerX: "px-6",
-  maxWidth: "max-w-7xl",
-  cardPadding: "p-6",
-  cardPaddingLg: "p-8",
+  sectionY: "py-16",
+  sectionYLg: "py-24",
+  containerX: "px-4",
+  maxWidth: "max-w-6xl",
+  cardPadding: "p-4", // cards compactos
+  cardPaddingMd: "p-5", // cards padrão
+  cardPaddingLg: "p-6", // modais, painéis
 } as const;
 
 // ─── 6. BORDER RADIUS ─────────────────────────────────────────────────────────
 
 export const radius = {
-  sm: "rounded-lg", // inputs, small elements
-  md: "rounded-xl", // buttons, badges
-  lg: "rounded-2xl", // cards
-  xl: "rounded-3xl", // hero sections, feature cards
-  full: "rounded-full", // pills, avatars, FABs
+  sm: "rounded-md", // 6px - inputs, campos pequenos
+  md: "rounded-lg", // 8px - botões, badges
+  lg: "rounded-[10px]", // 10px - cards padrão
+  xl: "rounded-2xl", // 20px - cards hero, modais
+  pill: "rounded-full", // pills, avatars, FABs
 } as const;
 
 // ─── 7. SHADOWS ───────────────────────────────────────────────────────────────
 
 export const shadow = {
-  card: "0 4px 24px rgba(0,0,0,0.25)",
-  cardHover: "0 8px 32px rgba(0,0,0,0.35)",
-  cardFeatured: `0 0 0 1px ${brand.orangeAlpha20}, 0 16px 48px rgba(0,0,0,0.4)`,
-  button: "0 4px 16px rgba(0,0,0,0.2)",
-  buttonHover: "0 8px 24px rgba(0,0,0,0.3)",
-  header: `0 4px 24px rgba(${brand.navy}, 0.14)`,
+  card: "0 4px 16px rgba(0,0,0,0.4)",
+  cardHover: "0 8px 28px rgba(0,0,0,0.5)",
+  button: "0 2px 12px rgba(0,0,0,0.3)",
+  modal: "0 24px 64px rgba(0,0,0,0.6)",
 
-  // Glows coloridos para cards de curso
-  glow: (hex: string, opacity = 0.25): string => {
+  // Focus rings (acessibilidade)
+  focusLime: `0 0 0 3px ${brand.limeAlpha30}`,
+  focusTerra: `0 0 0 3px ${brand.terraAlpha30}`,
+  focusViolet: `0 0 0 3px ${brand.violetAlpha30}`,
+
+  // Glows coloridos (cards em destaque)
+  glowLime: `0 0 48px rgba(200,241,53,0.18)`,
+  glowTerra: `0 0 48px rgba(232,105,74,0.18)`,
+  glowViolet: `0 0 48px rgba(167,139,250,0.18)`,
+
+  // Glow genérico por hex + opacidade
+  glow: (hex: string, opacity = 0.2): string => {
     const alpha = Math.round(opacity * 255)
       .toString(16)
       .padStart(2, "0");
@@ -185,34 +240,108 @@ export const shadow = {
 // ─── 8. TRANSITIONS ───────────────────────────────────────────────────────────
 
 export const transition = {
-  fast: "transition-all duration-150",
+  fast: "transition-all duration-100",
   base: "transition-all duration-200",
   slow: "transition-all duration-300",
   slower: "transition-all duration-500",
+  spring: "transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
 } as const;
 
-// ─── 9. CLOTHES CATEGORY COLORS ──────────────────────────────────────────────
-// Cores por categoria de roupas.
+// ─── 9. LISTING MODE COLORS ──────────────────────────────────────────────────
+// Cores por modalidade de anúncio.
 
-export const categoryColor = {
-  casual: brand.sky, // Roupas casuais
-  festa: "#06b6d4", // Vestidos de festa
-  acessorios: brand.orangeLight, // Acessórios
-  promocao: "#f43f5e", // Itens em promoção
-  lancamentos: brand.sky, // Lançamentos
+export const modeColor = {
+  /** Venda com negociação de preço */
+  sell: {
+    text: brand.terra,
+    bg: brand.terraAlpha12,
+    border: brand.terraAlpha30,
+    label: "Venda",
+  },
+  /** Troca direta (sem dinheiro) */
+  swap: {
+    text: brand.violet,
+    bg: brand.violetAlpha12,
+    border: brand.violetAlpha30,
+    label: "Troca direta",
+  },
+  /** Aceita venda ou troca */
+  both: {
+    text: brand.lime,
+    bg: brand.limeAlpha10,
+    border: brand.limeAlpha30,
+    label: "Venda ou troca",
+  },
 } as const;
 
-// ─── 10. PRODUCT STATUS COLORS ───────────────────────────────────────────────
+// ─── 10. CLOTHING CONDITION ──────────────────────────────────────────────────
+// Estado de conservação da peça.
 
-export const statusColor: Record<string, string> = {
-  Novidade: brand.orange,
-  Tendência: brand.sky,
-  Exclusivo: "#10b981",
-  "Últimas Peças": "#a78bfa",
-  Promoção: brand.orange,
+export const conditionColor: Record<
+  string,
+  { text: string; bg: string; border: string }
+> = {
+  "Novo com etiqueta": {
+    text: color.success,
+    bg: color.successBg,
+    border: color.successBorder,
+  },
+  "Ótimo estado": {
+    text: color.success,
+    bg: color.successBg,
+    border: color.successBorder,
+  },
+  "Bom estado": {
+    text: color.warning,
+    bg: color.warningBg,
+    border: color.warningBorder,
+  },
+  "Com detalhes": {
+    text: color.error,
+    bg: color.errorBg,
+    border: color.errorBorder,
+  },
 } as const;
 
-// ─── 11. Z-INDEX ──────────────────────────────────────────────────────────────
+// ─── 11. PROPOSAL STATUS COLORS ──────────────────────────────────────────────
+
+export const proposalStatus: Record<
+  string,
+  { text: string; bg: string; border: string; label: string }
+> = {
+  pending: {
+    text: color.warning,
+    bg: color.warningBg,
+    border: color.warningBorder,
+    label: "Aguardando resposta",
+  },
+  accepted: {
+    text: color.success,
+    bg: color.successBg,
+    border: color.successBorder,
+    label: "Proposta aceita",
+  },
+  declined: {
+    text: color.error,
+    bg: color.errorBg,
+    border: color.errorBorder,
+    label: "Proposta recusada",
+  },
+  countered: {
+    text: brand.violet,
+    bg: brand.violetAlpha12,
+    border: brand.violetAlpha30,
+    label: "Contraproposta enviada",
+  },
+  completed: {
+    text: color.info,
+    bg: color.infoBg,
+    border: color.infoBorder,
+    label: "Negociação concluída",
+  },
+} as const;
+
+// ─── 12. Z-INDEX ──────────────────────────────────────────────────────────────
 
 export const zIndex = {
   base: 0,
@@ -222,11 +351,10 @@ export const zIndex = {
   overlay: 40,
   modal: 50,
   toast: 60,
-  fab: 50, // floating action button (WhatsApp)
+  fab: 50, // botão flutuante
 } as const;
 
-// ─── 12. BREAKPOINTS (referência — use classes Tailwind no JSX) ───────────────
-// sm: 640px | md: 768px | lg: 1024px | xl: 1280px | 2xl: 1536px
+// ─── 13. BREAKPOINTS (referência - use classes Tailwind no JSX) ───────────────
 
 export const breakpoint = {
   sm: 640,
@@ -236,20 +364,47 @@ export const breakpoint = {
   "2xl": 1536,
 } as const;
 
-// ─── 13. ANIMATION DELAYS (staggered reveals) ────────────────────────────────
+// ─── 14. ANIMATION DELAYS (staggered reveals) ────────────────────────────────
 // Use como style={{ animationDelay: animDelay.item(index) }}
 
 export const animDelay = {
-  item: (i: number): string => `${i * 100}ms`,
-  fast: (i: number): string => `${i * 60}ms`,
-  slow: (i: number): string => `${i * 160}ms`,
+  item: (i: number): string => `${i * 80}ms`,
+  fast: (i: number): string => `${i * 50}ms`,
+  slow: (i: number): string => `${i * 130}ms`,
 } as const;
 
-// ─── 14. BACKGROUND TEXTURE HELPERS ──────────────────────────────────────────
+// ─── 15. PRICE TAG SIGNATURE ─────────────────────────────────────────────────
+// Assinatura visual do sistema: etiqueta de preço física nos cards.
+// Aplique via componente <PriceTag mode="sell|swap|both" price={...} />.
+// Os valores abaixo alimentam os estilos do componente.
+
+export const priceTag = {
+  sell: {
+    label: "venda",
+    color: brand.terra,
+    bg: brand.terraAlpha12,
+    border: brand.terraAlpha30,
+  },
+  swap: {
+    label: "troca",
+    color: brand.violet,
+    bg: brand.violetAlpha12,
+    border: brand.violetAlpha30,
+  },
+  both: {
+    label: "ou troca",
+    color: brand.lime,
+    bg: brand.limeAlpha10,
+    border: brand.limeAlpha30,
+  },
+} as const;
+
+// ─── 16. BACKGROUND TEXTURE HELPERS ──────────────────────────────────────────
 // Objetos style={{}} prontos para usar em divs decorativos.
+// Use em conjunto com um fundo sólido e position: relative.
 
 export const texture = {
-  grid: (color = "#ffffff", opacity = 0.05): React.CSSProperties => ({
+  grid: (color = "#ffffff", opacity = 0.04): React.CSSProperties => ({
     backgroundImage: `
       linear-gradient(${color} 1px, transparent 1px),
       linear-gradient(90deg, ${color} 1px, transparent 1px)
@@ -258,7 +413,7 @@ export const texture = {
     opacity,
   }),
 
-  gridFine: (color = "#ffffff", opacity = 0.04): React.CSSProperties => ({
+  gridFine: (color = "#ffffff", opacity = 0.03): React.CSSProperties => ({
     backgroundImage: `
       linear-gradient(${color} 1px, transparent 1px),
       linear-gradient(90deg, ${color} 1px, transparent 1px)
@@ -267,55 +422,30 @@ export const texture = {
     opacity,
   }),
 
-  dots: (color = "#ffffff", opacity = 0.04): React.CSSProperties => ({
+  dots: (color = "#ffffff", opacity = 0.035): React.CSSProperties => ({
     backgroundImage: `radial-gradient(circle, ${color} 1px, transparent 1px)`,
-    backgroundSize: "30px 30px",
-    opacity,
-  }),
-
-  diagonal: (opacity = 0.04): React.CSSProperties => ({
-    backgroundImage:
-      "repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%)",
-    backgroundSize: "8px 8px",
+    backgroundSize: "28px 28px",
     opacity,
   }),
 } as const;
 
-// ─── 15. WHATSAPP ─────────────────────────────────────────────────────────────
-// Número e mensagens padrão para CTAs de WhatsApp.
-
-export const whatsapp = {
-  number: "5588999999999", // ← altere para o número real
-  baseUrl: "https://wa.me/",
-  defaultMsg: "Olá! Gostaria de mais informações sobre as roupas da Dresses.",
-  roupaMsg: (roupa: string) =>
-    `Olá! Tenho interesse na peça ${roupa} da Dresses.`,
-  colecaoMsg: (colecao: string) =>
-    `Olá! Gostaria de obter mais informações sobre a coleção ${colecao}.`,
-  url: (msg: string): string =>
-    `https://wa.me/5588999999999?text=${encodeURIComponent(msg)}`,
-} as const;
-
-// ─── 16. CONTACT ──────────────────────────────────────────────────────────────
+// ─── 17. CONTACT ──────────────────────────────────────────────────────────────
 
 export const contact = {
-  phone: "(88) 0000-0000",
-  email: "contato@dresses.com.br",
-  address: "Juazeiro do Norte, CE",
-  maps: "https://maps.google.com",
+  supportEmail: "suporte@brechoonline.com.br",
 } as const;
 
 // ─── TYPE EXPORTS ─────────────────────────────────────────────────────────────
-// Úteis para tipar props de componentes que recebem cores do tema.
 
 export type BrandColor = keyof typeof brand;
 export type SemanticColor = keyof typeof color;
-export type CategoryColor = keyof typeof categoryColor;
-export type CourseStatus = keyof typeof statusColor;
+export type ListingMode = keyof typeof modeColor;
+export type ProposalStatus = keyof typeof proposalStatus;
+export type ClothingCondition = keyof typeof conditionColor;
 
 // ─── Re-export padrão (barrel) ────────────────────────────────────────────────
-// Permite: import theme from "@/lib/theme"
-//          theme.brand.orange / theme.gradient.hero / etc.
+// import theme from "@/lib/theme"
+// theme.brand.lime / theme.color.sell / theme.modeColor.swap / etc.
 
 import type React from "react";
 
@@ -328,13 +458,14 @@ const theme = {
   radius,
   shadow,
   transition,
-  categoryColor,
-  statusColor,
+  modeColor,
+  conditionColor,
+  proposalStatus,
+  priceTag,
   zIndex,
   breakpoint,
   animDelay,
   texture,
-  whatsapp,
   contact,
 } as const;
 

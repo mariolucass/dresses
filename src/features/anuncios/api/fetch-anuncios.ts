@@ -1,9 +1,13 @@
-import type { Anuncio, AnuncioFilters } from '@entities/anuncio/model/anuncio.types';
-import { storage, STORAGE_KEYS } from '@shared/lib/storage';
+import type {
+  Anuncio,
+  AnuncioFilters,
+} from "@entities/anuncio/model/anuncio.types";
+import { storage, STORAGE_KEYS } from "@shared/lib/storage";
 
 export function fetchAnuncios(filters?: AnuncioFilters): Anuncio[] {
-  let anuncios = storage.getCollection<Anuncio>(STORAGE_KEYS.ANUNCIOS)
-    .filter((a) => a.status === 'DISPONIVEL');
+  let anuncios = storage
+    .getCollection<Anuncio>(STORAGE_KEYS.ANUNCIOS)
+    .filter((a) => a.status === "DISPONIVEL");
 
   if (!filters) return anuncios;
 
@@ -21,7 +25,7 @@ export function fetchAnuncios(filters?: AnuncioFilters): Anuncio[] {
   }
   if (filters.tipo) {
     anuncios = anuncios.filter(
-      (a) => a.tipo === filters.tipo || a.tipo === 'AMBOS',
+      (a) => a.tipo === filters.tipo || a.tipo === "AMBOS",
     );
   }
   if (filters.condicao) {
@@ -31,7 +35,9 @@ export function fetchAnuncios(filters?: AnuncioFilters): Anuncio[] {
     anuncios = anuncios.filter((a) => (a.preco ?? 0) >= filters.precoMin!);
   }
   if (filters.precoMax !== undefined) {
-    anuncios = anuncios.filter((a) => (a.preco ?? Infinity) <= filters.precoMax!);
+    anuncios = anuncios.filter(
+      (a) => (a.preco ?? Infinity) <= filters.precoMax!,
+    );
   }
   if (filters.tamanho) {
     anuncios = anuncios.filter((a) =>
@@ -48,6 +54,7 @@ export function fetchAnuncioById(id: string): Anuncio | null {
 }
 
 export function fetchAnunciosByUser(userId: string): Anuncio[] {
-  return storage.getCollection<Anuncio>(STORAGE_KEYS.ANUNCIOS)
+  return storage
+    .getCollection<Anuncio>(STORAGE_KEYS.ANUNCIOS)
     .filter((a) => a.userId === userId);
 }

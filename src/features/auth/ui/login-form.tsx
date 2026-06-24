@@ -1,18 +1,17 @@
 "use client";
 
+import { loginSchema, loginService, type LoginFormData } from "@features/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@shared/components/ui/input";
+import { Label } from "@shared/components/ui/label";
+import { ROUTES } from "@shared/config/routes";
+import { cn } from "@shared/lib/utils";
+import { useAuth } from "@shared/providers/auth-provider";
+import { Button } from "@shared/ui/button";
 import { Loader2, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
-import { loginSchema, loginService, type LoginFormData } from "@features/auth";
-import { ROUTES } from "@shared/config/routes";
-import { Input } from "@shared/components/ui/input";
-import { Label } from "@shared/components/ui/label";
-import { cn } from "@shared/lib/utils";
-import { useAuth } from "@shared/providers/auth-provider";
-import { Button } from "@shared/ui/button";
 
 export function LoginForm() {
   const router = useRouter();
@@ -44,11 +43,11 @@ export function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
+      className="space-y-6"
       data-testid="login-form"
       noValidate
     >
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="email">E-mail</Label>
         <Input
           id="email"
@@ -56,7 +55,9 @@ export function LoginForm() {
           autoComplete="email"
           placeholder="voce@email.com"
           aria-invalid={!!errors.email}
-          className={cn(errors.email && "border-destructive focus-visible:ring-destructive")}
+          className={cn(
+            errors.email && "border-destructive focus-visible:ring-destructive",
+          )}
           {...register("email")}
         />
         {errors.email && (
@@ -64,7 +65,7 @@ export function LoginForm() {
         )}
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="senha">Senha</Label>
         </div>
@@ -74,7 +75,9 @@ export function LoginForm() {
           autoComplete="current-password"
           placeholder="••••••••"
           aria-invalid={!!errors.senha}
-          className={cn(errors.senha && "border-destructive focus-visible:ring-destructive")}
+          className={cn(
+            errors.senha && "border-destructive focus-visible:ring-destructive",
+          )}
           {...register("senha")}
         />
         {errors.senha && (
@@ -85,13 +88,18 @@ export function LoginForm() {
       {serverError && (
         <div
           role="alert"
-          className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+          className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
         >
           {serverError}
         </div>
       )}
 
-      <Button type="submit" className="w-full gap-2" size="lg" disabled={isSubmitting}>
+      <Button
+        type="submit"
+        className="w-full gap-2"
+        size="lg"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (
@@ -100,10 +108,20 @@ export function LoginForm() {
         Entrar
       </Button>
 
-      <p className="text-center text-xs text-muted-foreground">
-        Dica de demo: <span className="font-medium">ana@brecho.com</span> / senha{" "}
-        <span className="font-medium">senha123</span>
-      </p>
+      <div className="mt-8 space-y-2 text-center text-xs text-muted-foreground">
+        <p className="font-medium">Contas de demonstração:</p>
+
+        <p>
+          Maria:{" "}
+          <span className="font-semibold text-foreground">maria@mail.com</span>{" "}
+          / <span className="font-semibold text-foreground">password123</span>
+        </p>
+        <p>
+          João:{" "}
+          <span className="font-semibold text-foreground">joao@mail.com</span> /{" "}
+          <span className="font-semibold text-foreground">password123</span>
+        </p>
+      </div>
     </form>
   );
 }
