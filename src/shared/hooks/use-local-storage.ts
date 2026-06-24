@@ -2,10 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-/**
- * Hook para sincronização reativa com localStorage.
- * Escuta o evento `storage` para atualizar entre abas.
- */
 export function useLocalStorage<T>(
   key: string,
   initialValue: T,
@@ -28,7 +24,7 @@ export function useLocalStorage<T>(
         const newValue = value instanceof Function ? value(storedValue) : value;
         window.localStorage.setItem(key, JSON.stringify(newValue));
         setStoredValue(newValue);
-        // Dispara evento para sincronizar outras instâncias do hook
+
         window.dispatchEvent(new StorageEvent("storage", { key }));
       } catch {
         console.error(`[useLocalStorage] Erro ao salvar chave "${key}".`);

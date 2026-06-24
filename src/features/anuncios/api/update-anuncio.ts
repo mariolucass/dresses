@@ -1,7 +1,10 @@
-import type { Anuncio, UpdateAnuncioDto } from '@entities/anuncio/model/anuncio.types';
-import { storage, STORAGE_KEYS } from '@shared/lib/storage';
-import { now } from '@shared/lib/id-generator';
-import type { OperationResult } from '@shared/types/common.types';
+import type {
+  Anuncio,
+  UpdateAnuncioDto,
+} from "@entities/anuncio/model/anuncio.types";
+import { now } from "@shared/lib/id-generator";
+import { storage, STORAGE_KEYS } from "@shared/lib/storage";
+import type { OperationResult } from "@shared/types/common.types";
 
 export function updateAnuncioService(
   id: string,
@@ -12,6 +15,6 @@ export function updateAnuncioService(
     id,
     { ...dto, updatedAt: now() },
   );
-  if (!updated) return { success: false, error: 'Anúncio não encontrado.' };
+  if (!updated) return { success: false, error: "Anúncio não encontrado." };
   return { success: true, data: updated };
 }

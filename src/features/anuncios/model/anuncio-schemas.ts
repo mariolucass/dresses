@@ -2,7 +2,10 @@ import { z } from "zod";
 
 export const anuncioSchema = z
   .object({
-    titulo: z.string().min(5, "Titulo muito curto.").max(80, "Titulo muito longo."),
+    titulo: z
+      .string()
+      .min(5, "Titulo muito curto.")
+      .max(80, "Titulo muito longo."),
     descricao: z.string().min(10, "Descricao muito curta.").max(1000),
     marca: z.string().max(60, "Marca muito longa.").optional(),
     fotos: z.array(z.string()).min(1, "Adicione ao menos uma foto.").max(5),
@@ -32,7 +35,8 @@ export const anuncioSchema = z
   )
   .refine(
     (data) => {
-      if (data.tipo === "TROCA" || data.tipo === "AMBOS") return !!data.valorVAT;
+      if (data.tipo === "TROCA" || data.tipo === "AMBOS")
+        return !!data.valorVAT;
       return true;
     },
     { message: "Informe o valor VAT para trocas.", path: ["valorVAT"] },

@@ -28,16 +28,19 @@ export function AppSidebar() {
 
   return (
     <>
-      {/* Sidebar — desktop */}
+      {/* Sidebar - desktop */}
       <nav
         data-testid="app-sidebar"
         className="hidden w-60 shrink-0 flex-col border-r bg-card/40 px-3 py-6 md:flex"
       >
-        <Link href={ROUTES.ANUNCIOS} className="mb-8 flex items-center gap-2 px-2">
+        <Link
+          href={ROUTES.ANUNCIOS}
+          className="mb-8 flex items-center gap-2 px-2"
+        >
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Shirt className="size-4" />
           </div>
-          <span className="font-serif text-base">Brechó Online</span>
+          <span className="font-serif text-base">Desapeguei</span>
         </Link>
 
         <ul className="flex flex-col gap-1">
@@ -65,7 +68,7 @@ export function AppSidebar() {
         </ul>
       </nav>
 
-      {/* Navegação — mobile (bottom bar) */}
+      {/* Navegação - mobile (bottom bar) */}
       <nav
         data-testid="app-sidebar-mobile"
         className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t bg-card/95 py-2 backdrop-blur-md md:hidden"

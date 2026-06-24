@@ -1,17 +1,11 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, UserPlus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-
 import {
   registerSchema,
   registerService,
   type RegisterFormData,
 } from "@features/auth";
-import { ROUTES } from "@shared/config/routes";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@shared/components/ui/input";
 import { Label } from "@shared/components/ui/label";
 import {
@@ -21,9 +15,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@shared/components/ui/select";
+import { ROUTES } from "@shared/config/routes";
 import { cn } from "@shared/lib/utils";
 import { useAuth } from "@shared/providers/auth-provider";
 import { Button } from "@shared/ui/button";
+import { Loader2, UserPlus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 const ROLE_OPTIONS = [
   { value: "AMBOS", label: "Comprar e vender" },
@@ -70,18 +69,20 @@ export function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4"
+      className="space-y-6"
       data-testid="register-form"
       noValidate
     >
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="nome">Nome completo</Label>
         <Input
           id="nome"
           autoComplete="name"
           placeholder="Seu nome"
           aria-invalid={!!errors.nome}
-          className={cn(errors.nome && "border-destructive focus-visible:ring-destructive")}
+          className={cn(
+            errors.nome && "border-destructive focus-visible:ring-destructive",
+          )}
           {...register("nome")}
         />
         {errors.nome && (
@@ -89,7 +90,7 @@ export function RegisterForm() {
         )}
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="email">E-mail</Label>
         <Input
           id="email"
@@ -97,7 +98,9 @@ export function RegisterForm() {
           autoComplete="email"
           placeholder="voce@email.com"
           aria-invalid={!!errors.email}
-          className={cn(errors.email && "border-destructive focus-visible:ring-destructive")}
+          className={cn(
+            errors.email && "border-destructive focus-visible:ring-destructive",
+          )}
           {...register("email")}
         />
         {errors.email && (
@@ -105,8 +108,8 @@ export function RegisterForm() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
           <Label htmlFor="senha">Senha</Label>
           <Input
             id="senha"
@@ -114,7 +117,10 @@ export function RegisterForm() {
             autoComplete="new-password"
             placeholder="••••••••"
             aria-invalid={!!errors.senha}
-            className={cn(errors.senha && "border-destructive focus-visible:ring-destructive")}
+            className={cn(
+              errors.senha &&
+                "border-destructive focus-visible:ring-destructive",
+            )}
             {...register("senha")}
           />
           {errors.senha && (
@@ -122,7 +128,7 @@ export function RegisterForm() {
           )}
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="confirmarSenha">Confirmar senha</Label>
           <Input
             id="confirmarSenha"
@@ -131,17 +137,20 @@ export function RegisterForm() {
             placeholder="••••••••"
             aria-invalid={!!errors.confirmarSenha}
             className={cn(
-              errors.confirmarSenha && "border-destructive focus-visible:ring-destructive",
+              errors.confirmarSenha &&
+                "border-destructive focus-visible:ring-destructive",
             )}
             {...register("confirmarSenha")}
           />
           {errors.confirmarSenha && (
-            <p className="text-xs text-destructive">{errors.confirmarSenha.message}</p>
+            <p className="text-xs text-destructive">
+              {errors.confirmarSenha.message}
+            </p>
           )}
         </div>
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <Label htmlFor="role">O que você quer fazer no Brechó?</Label>
         <Controller
           name="role"
@@ -166,13 +175,18 @@ export function RegisterForm() {
       {serverError && (
         <div
           role="alert"
-          className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+          className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
         >
           {serverError}
         </div>
       )}
 
-      <Button type="submit" className="w-full gap-2" size="lg" disabled={isSubmitting}>
+      <Button
+        type="submit"
+        className="w-full gap-2"
+        size="lg"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (

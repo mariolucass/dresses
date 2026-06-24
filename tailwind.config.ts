@@ -24,7 +24,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", "sans-serif"],
-        serif: ["var(--font-serif)", "serif"],
+        display: ["var(--font-display)", "sans-serif"],
+        serif: ["var(--font-display)", "sans-serif"],
       },
       colors: {
         background: "hsl(var(--background))",

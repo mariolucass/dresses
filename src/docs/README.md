@@ -1,4 +1,4 @@
-# 📚 Documentação do Desenvolvedor — Brechó Online
+# 📚 Documentação do Desenvolvedor - Desapeguei
 
 Bem-vindo(a) ao projeto! Sabemos que a arquitetura do projeto (Feature-Sliced Design) pode parecer intimidadora no início se você está acostumado com o Next.js tradicional (apenas a pasta `app/` e `components/`).
 

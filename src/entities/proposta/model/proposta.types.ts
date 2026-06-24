@@ -7,7 +7,9 @@ export type StatusProposta =
   | "ACEITA"
   | "RECUSADA"
   | "CONTRAPROPOSTA"
-  | "CANCELADA";
+  | "CANCELADA"
+  | "SUBSTITUIDA"
+  | "CONCLUIDA";
 
 export interface ItemOfertado {
   anuncioId: string;
@@ -19,10 +21,13 @@ export interface Proposta {
   anuncioId: string; // anúncio alvo da proposta
   compradorId: string;
   vendedorId: string;
+  /** Participante que enviou esta versão da proposta. */
+  autorId?: string;
   tipo: TipoProposta;
   valorOfertado?: number; // para propostas de COMPRA ou MISTA
   vatOfertado?: number; // valor VAT ofertado
   itensOfertados: ItemOfertado[]; // para propostas de TROCA
+  itensDesejados?: ItemOfertado[]; // itens extras desejados do vendedor, além do anuncioId principal
   mensagemInicial?: string;
   status: StatusProposta;
   contrapropostaRef?: string; // ID da proposta pai se for contraproposta
@@ -32,11 +37,12 @@ export interface Proposta {
 
 export type CreatePropostaDto = Omit<
   Proposta,
-  "id" | "status" | "createdAt" | "updatedAt"
+  "id" | "status" | "createdAt" | "updatedAt" | "autorId"
 >;
 
 export type RespostaProposta = {
   propostaId: string;
+  actorId: string;
   resposta: "ACEITA" | "RECUSADA" | "CONTRAPROPOSTA";
   contrapropostaData?: Partial<CreatePropostaDto>;
 };

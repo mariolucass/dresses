@@ -1,14 +1,19 @@
-import type { TransacaoVAT } from "@entities/transacao-vat/model/transacao-vat.types";
+import type {
+  MotivoTransacaoVAT,
+  TransacaoVAT,
+} from "@entities/transacao-vat/model/transacao-vat.types";
 import type { User } from "@entities/user/model/user.types";
 import { generateId, now } from "@shared/lib/id-generator";
 import { storage, STORAGE_KEYS } from "@shared/lib/storage";
 import type { OperationResult } from "@shared/types/common.types";
+import { emitVatUpdated } from "../model/vat-events";
 
 export function debitarVAT(
   userId: string,
   valor: number,
   descricao: string,
   negociacaoId?: string,
+  motivo: MotivoTransacaoVAT = "PROPOSTA_ACEITA",
 ): OperationResult<TransacaoVAT> {
   const users = storage.getCollection<User>(STORAGE_KEYS.USERS);
   const user = users.find((u) => u.id === userId);
@@ -35,10 +40,11 @@ export function debitarVAT(
     saldoAnterior,
     saldoPosterior,
     descricao,
-    motivo: "PROPOSTA_ACEITA",
+    motivo,
     negociacaoId,
     createdAt: now(),
   };
   storage.addToCollection<TransacaoVAT>(STORAGE_KEYS.TRANSACOES_VAT, transacao);
+  emitVatUpdated({ userId, saldo: saldoPosterior });
   return { success: true, data: transacao };
 }
