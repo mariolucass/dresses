@@ -242,7 +242,7 @@ export function LandingPage() {
 
           {/* Headline */}
           <h1
-            className="font-display text-[82px] font-black uppercase leading-[.9] tracking-[-0.02em]"
+            className="font-display text-[56px] md:text-[82px] font-black uppercase leading-[.9] tracking-[-0.02em]"
             style={{ color: theme.color.textPrimary }}
           >
             Sua roupa
@@ -254,7 +254,7 @@ export function LandingPage() {
 
           {/* Body row */}
           <div
-            className="mt-16 grid grid-cols-2 items-end gap-16 border-t pt-12"
+            className="mt-16 grid grid-cols-1 md:grid-cols-2 items-start md:items-end gap-10 md:gap-16 border-t pt-12"
             style={{ borderColor: theme.color.border }}
           >
             {/* Left: desc + pills */}
@@ -277,7 +277,7 @@ export function LandingPage() {
             </div>
 
             {/* Right: stats + CTAs */}
-            <div className="flex flex-col items-end gap-5">
+            <div className="flex flex-col items-start md:items-end gap-5">
               <div className="w-full space-y-3">
                 {STATS.map((s) => (
                   <div
@@ -361,7 +361,7 @@ export function LandingPage() {
           <SectionLabel>Como funciona</SectionLabel>
 
           <div
-            className="grid grid-cols-3 divide-x"
+            className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x"
             style={{ borderColor: theme.color.border }}
           >
             {STEPS.map((step, i) => (
@@ -371,7 +371,7 @@ export function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ ...spring2, delay: i * 0.1 }}
-                className="relative px-7 pb-0 pt-0 first:pl-0 last:pr-0"
+                className="relative px-0 py-8 md:py-0 md:px-7 first:pt-0 md:first:pl-0 last:pb-0 md:last:pr-0"
                 style={{
                   borderColor: theme.color.border,
                 }}
@@ -421,11 +421,11 @@ export function LandingPage() {
         style={{ borderColor: theme.color.border }}
       >
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-[1fr_2fr] items-start gap-24">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] items-start gap-12 md:gap-24">
             {/* Left sticky column */}
-            <div className="sticky top-24">
+            <div className="md:sticky md:top-24">
               <h2
-                className="font-display text-[48px] font-black uppercase leading-[.92]"
+                className="font-display text-[40px] md:text-[48px] font-black uppercase leading-[.92]"
                 style={{ color: theme.color.textPrimary }}
               >
                 Feito pra
@@ -511,7 +511,7 @@ export function LandingPage() {
 
           {/* Pull quote */}
           <blockquote
-            className="mb-7 font-display text-[38px] font-bold leading-[1.05]"
+            className="mb-7 font-display text-[28px] md:text-[38px] font-bold leading-[1.05]"
             style={{ color: theme.color.textPrimary }}
           >
             "Site muito fácil de usar e prático. Amei a peça que comprei,{" "}
@@ -524,30 +524,34 @@ export function LandingPage() {
             "
           </blockquote>
           <div
-            className="mb-12 flex items-center gap-2.5 text-[11px] uppercase tracking-[.08em]"
+            className="mb-12 flex flex-col md:flex-row md:items-center gap-2 md:gap-2.5 text-[11px] uppercase tracking-[.08em]"
             style={{ color: theme.color.textSubtle }}
           >
-            <div
-              className="flex h-7 w-7 items-center justify-center rounded-full border text-[11px] font-semibold"
-              style={{
-                background: theme.brand.limeAlpha10,
-                borderColor: theme.brand.limeAlpha30,
-                color: theme.brand.lime,
-              }}
-            >
-              JM
+            <div className="flex items-center gap-2">
+              <div
+                className="flex h-7 w-7 items-center justify-center rounded-full border text-[11px] font-semibold shrink-0"
+                style={{
+                  background: theme.brand.limeAlpha10,
+                  borderColor: theme.brand.limeAlpha30,
+                  color: theme.brand.lime,
+                }}
+              >
+                JM
+              </div>
+              Joao Vitor Moura - Juazeiro do Norte
             </div>
-            Joao Vitor Moura - Juazeiro do Norte
-            <span
-              className="mx-1 inline-block h-6 w-px"
-              style={{ background: theme.color.border }}
-            />
-            Membro desde março
+            <div className="flex items-center gap-2">
+              <span
+                className="hidden md:inline-block h-6 w-px"
+                style={{ background: theme.color.border }}
+              />
+              Membro desde março
+            </div>
           </div>
 
           {/* Card grid */}
           <div
-            className="grid grid-cols-3 divide-x border-l border-t"
+            className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x border-t border-x md:border-r-0 md:border-l"
             style={{ borderColor: theme.color.border }}
           >
             {TESTIMONIALS.map((t) => (
@@ -606,8 +610,8 @@ export function LandingPage() {
       </section>
 
       {/* ── CTA Final ──────────────────────────────────────────────────── */}
-      <section className="px-4 py-32 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 items-center gap-24">
+      <section className="px-4 py-24 md:py-32 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-24">
           {/* Left */}
           <div>
             <p
@@ -617,7 +621,7 @@ export function LandingPage() {
               Comece hoje
             </p>
             <h2
-              className="font-display text-[56px] font-black uppercase leading-[.92]"
+              className="font-display text-[44px] md:text-[56px] font-black uppercase leading-[.92]"
               style={{ color: theme.color.textPrimary }}
             >
               Seu guarda-
@@ -637,7 +641,7 @@ export function LandingPage() {
 
           {/* Right: inline form */}
           <div
-            className="flex flex-col gap-8 rounded-2xl border p-12"
+            className="flex flex-col gap-6 md:gap-8 rounded-2xl border p-8 md:p-12"
             style={{
               background: theme.color.bgSurface,
               borderColor: theme.color.border,
@@ -719,7 +723,7 @@ export function LandingPage() {
           borderColor: theme.color.border,
         }}
       >
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-7xl flex-col md:flex-row items-center justify-between gap-4 md:gap-0 px-4 sm:px-6 lg:px-8">
           <p
             className="text-[11px] tracking-[.02em]"
             style={{ color: theme.color.textSubtle }}
