@@ -22,7 +22,7 @@ export function RegisterPage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={spring1}
-        className="flex w-full flex-col justify-center gap-10 p-8 md:w-[56%] md:p-14"
+        className="flex w-full flex-col justify-center gap-10 p-6 sm:p-8 md:w-[56%] md:p-14"
       >
         <div className="space-y-4">
           <Link

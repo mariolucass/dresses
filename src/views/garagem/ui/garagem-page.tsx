@@ -190,7 +190,7 @@ export function GaragemPage() {
                   className="mt-1.5"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="edit-price">Preço (R$)</Label>
                   <Input
